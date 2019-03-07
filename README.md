@@ -61,3 +61,4 @@ Support is provided at the given support link, including instructions to get sta
 - Integrate XCTests and [Travis](https://travis-ci.org)
 - Integrate [Fabric](https://get.fabric.io)
 - Integrate [Swift Lint](https://github.com/realm/SwiftLint)
+Commit some new text.
