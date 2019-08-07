@@ -24,8 +24,8 @@ excluded:
 line_length:
     warning: 150
     error: 200
-    ignores_function_declarations: true
-    ignores_comments: true
+    ignores_function_declarations: false
+    ignores_comments: false
     ignores_urls: true
 
 # *********
@@ -33,8 +33,8 @@ line_length:
 # *********
 
 function_body_length:
-    warning: 300
-    error: 500
+    warning: 100
+    error: 200
 
 function_parameter_count:
     warning: 6
@@ -45,11 +45,11 @@ function_parameter_count:
 # *****
 
 type_body_length:
-    warning: 300
-    error: 500
+    warning: 500
+    error: 1000
 
 file_length:
-    warning: 1000
+    warning: 800
     error: 1500
     ignore_comment_only_lines: true
 
