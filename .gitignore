@@ -3,9 +3,9 @@
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## Items to ignore
-*.NearbyWeather.xcodeproj/xcuserdata/
-*.NearbyWeather/Info.plist.ori
-*.NearbyWeather.xcodeproj/project.pbxproj.ori
+project/NearbyWeather.xcodeproj/xcuserdata/
+project/NearbyWeather/Info.plist.ori
+project/NearbyWeather.xcodeproj/project.pbxproj.ori
 
 ## Build generated
 build/
