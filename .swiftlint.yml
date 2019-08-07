@@ -10,6 +10,7 @@ disabled_rules:
 opt_in_rules:
 - empty_count
 - empty_string
+- vertical_whitespace
 
 # Paths to ignore during linting.
 excluded:
@@ -52,6 +53,10 @@ file_length:
     warning: 800
     error: 1500
     ignore_comment_only_lines: true
+
+vertical_whitespace:
+    severity: error
+    max_empty_lines: 2
 
 # ****
 # Misc
