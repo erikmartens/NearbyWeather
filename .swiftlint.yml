@@ -5,6 +5,7 @@
 # Rule identifiers to exclude from running
 disabled_rules:
 - trailing_whitespace
+- force_cast
 
 # Rules disabled by default we want to enable
 opt_in_rules:
