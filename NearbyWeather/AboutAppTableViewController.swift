@@ -130,13 +130,13 @@ class AboutAppTableViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     switch section {
     case 0:
-      return R.string.localizable.resources()
+      return " " // supply a string with content in order to keep the spacing
     case 1:
-      return R.string.localizable.contributors()
+      return R.string.localizable.contributing()
     case 2:
       return nil
     case 3:
-      return nil
+      return R.string.localizable.contributors()
     case 4:
       return R.string.localizable.libraries()
     case 5:

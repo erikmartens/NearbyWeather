@@ -47,6 +47,7 @@ map_type_satellite = "Satellite";
 about = "À propos";
 resources = "Ressources";
 contributors = "Contributeurs";
+contributing = "Contribuer au développement";
 libraries = "Bibliothèques";
 app_title = "NearbyWeather - Open Source Weather";
 rate_version = "Noter cette version";
