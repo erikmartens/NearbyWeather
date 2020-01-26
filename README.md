@@ -35,19 +35,21 @@ With NearbyWeather you can:
 
 ## Goals of this Project
 NearbyWeather should help you as a reference for your development. Whether you just started iOS development or want to learn more about Swift by seeing in action, this project is here for your guidance. Idealy you already have gained some experience or got your feet wet with mobile development. NearbyWeather is created to teach basic principles of iOS development, including but not limited to:
-- Accessing and using the user's location
-- Persisiting data
-- Network requests
-- Using 3rd party libraries via CocoaPods
-- Using support scripts for creating bootstrapped resources
+
 - Programming concepts such as delegation, closures, generics & extensions
-- Swift language features such as codables
 - Avoidance of retain cycles
-- 3D touch (coming soon)
-- Peek & pop (coming soon)
+- Swift language features such as codables
+- Persisiting data
 - Using various UIKit classes
 - Using MapKit and customising maps
+- Accessing and using the user's location
 - Language localization
+- Network requests
+- Using 3rd part REST-APIs
+- Using 3rd party libraries via CocoaPods
+- Using support scripts for creating bootstrapped/bundle resources
+- Accessing bootstrapped/bundle resources
+- DevOps tools such as Fastlane or SwiftLint
 
 It therefore otherwise refrains from advanced concepts. The architecture is kept simple by using [Apple's recommended MVC pattern](https://developer.apple.com/library/content/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html). This architecture is fine for a small projects like this one. For complex apps there are better options, such as MVVM, VIP (Clean Swift) or even VIPER. The chosen architecture may for example limit the testability of the project, but then again for simplicty sake there are no unit tests present at all. Additionally the app uses singeltons for all services and managers. This further hinders testing. A better approach to enable this would be dependency injection. Furthermore delegation is used only losely. 
 
