@@ -5,7 +5,7 @@
 <h1 align="center">NearbyWeather - Open Source Weather</h1>
 
 <p align="center">
-<a href="https://developer.apple.com/swift/"><img src="https://img.shields.io/badge/Swift-5.0-orange.svg?style=flat" alt="Swift"/></a>
+<a href="https://developer.apple.com/swift/"><img src="https://img.shields.io/badge/Swift-5-orange.svg?style=flat" alt="Swift"/></a>
 <img src="https://img.shields.io/badge/Platform-iOS%2011.0+-lightgrey.svg" alt="Platform: iOS">
 <img src="https://img.shields.io/github/license/erikmartens/NearbyWeather.svg?style=flat" alt="License: MIT">
 <a href="https://twitter.com/erik_martens"><img src="https://img.shields.io/badge/Twitter-@erik_martens-blue.svg" alt="Twitter: @erik_martens"/></a>
@@ -41,6 +41,7 @@ NearbyWeather should help you as a reference for your development. Whether you j
 - Swift language features such as codables
 - Persisiting data
 - Using various UIKit classes
+- Various Apple-iOS-Components such as UserDefaults or NotificationCenter
 - Using MapKit and customising maps
 - Accessing and using the user's location
 - Language localization
@@ -49,16 +50,19 @@ NearbyWeather should help you as a reference for your development. Whether you j
 - Using 3rd party libraries via CocoaPods
 - Using support scripts for creating bootstrapped/bundle resources
 - Accessing bootstrapped/bundle resources
-- DevOps tools such as Fastlane or SwiftLint
+- "DevOps" tools such as Fastlane or SwiftLint
 
 It therefore otherwise refrains from advanced concepts. The architecture is kept simple by using [Apple's recommended MVC pattern](https://developer.apple.com/library/content/documentation/General/Conceptual/DevPedia-CocoaCore/MVC.html). This architecture is fine for a small projects like this one. For complex apps there are better options, such as MVVM, VIP (Clean Swift) or even VIPER. The chosen architecture may for example limit the testability of the project, but then again for simplicty sake there are no unit tests present at all. Additionally the app uses singeltons for all services and managers. This further hinders testing. A better approach to enable this would be dependency injection. Furthermore delegation is used only losely. 
 
 ## Support and Open Source
-Support is provided at the given support link, including instructions to get started with the app. The app's source code is open source. You can download and contribute via GitHub. To learn more about the project, visit the support website.
+Support is provided at the given support link, including instructions to get started with the app. The app's source code is open source. You can download and contribute via GitHub.
 
 ## Getting Started
-In order to get started, fork the project and clone it to your local machine. In order to open the project and in oder to run it, you will need to have the latest Apple developer tools installed, namely Xcode. For libraries this app uses the dependency manager [Cocoa Pods](https://cocoapods.org). Pods are not checked into the repository, so you will have run `pod install` after cloning.
+In order to get started, fork the project and clone it to your local machine. In order to open the project and in oder to run it, you will need to have the latest Apple developer tools installed, namely Xcode. For libraries this app uses the dependency manager [Cocoa Pods](https://cocoapods.org). Pods are not checked into the repository, so you will have run `pod install` after cloning. Additionally it might be helpful to set up signing through [fastlane match](https://docs.fastlane.tools/actions/match/). Create your own repo to store your personal sigining certificates and provisioning profiles and adapt the `./fastlane/Matchfile` accordingly. _Make sure to never commit these changes or your pull requests will be rejected._
 
+## Become a Beta-Tester
+
+Periodically test-builds will become available via Testflight. In order to take part in testing those submit an email address used as an Apple-ID to [erikmartens.developer@gmail.com](mailto: erikmartens.developer@gmail.com) to be added to the list of testers.
 
 ## Future Developments
 - [Release 2.1](https://github.com/erikmartens/NearbyWeather/projects/2)
