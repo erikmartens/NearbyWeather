@@ -31,11 +31,11 @@
 		"firstName": "Pierre-Yves",
 		"lastName": "Lapersonne",
     "contributionDescription": {
-      "en": "French Localization, Various Cleanups",
-      "de": "Französische Übersetzung, verschiedene Code-Bereinigungen",
-      "fr": "Traduction française, divers nettoyages de code"
+      "en": "French Localization, Dark Mode, Various Cleanups",
+      "de": "Französische Übersetzung, Dunkelmodus, verschiedene Code-Bereinigungen",
+      "fr": "Traduction française, mode sombre, divers nettoyages de code"
     },
-		"urlString": "https://github.com/pylapp"
+		"urlString": "https://pylapersonne.info"
 	}, {
     "firstName": "Lukáš",
     "lastName": "Prokein",

@@ -28,38 +28,42 @@ class AlertCell: UITableViewCell {
     timer?.invalidate()
   }
   
-  func configure(with errorMessage: String) {
+  func configure(with errorMessage: String, display mode: Constants.Theme.Mode) {
     backgroundColorView.layer.cornerRadius = 5.0
-    backgroundColorView.layer.backgroundColor = UIColor.black.cgColor
+    if mode == .dark {
+        backgroundColorView.layer.backgroundColor = Constants.Theme.Color.BrandColors.standardDay.cgColor
+    } else {
+        backgroundColorView.layer.backgroundColor = UIColor.black.cgColor
+    }
     
     noticeLabel.text = errorMessage
     
     startAnimationTimer()
   }
   
-  func configureWithErrorDataDTO(_ errorDataDTO: ErrorDataDTO?) {
+  func configureWithErrorDataDTO(_ errorDataDTO: ErrorDataDTO?, display mode: Constants.Theme.Mode) {
     guard let errorDataDTO = errorDataDTO else {
-      configure(with: R.string.localizable.unknown_error())
+        configure(with: R.string.localizable.unknown_error(), display: mode)
       return
     }
     switch errorDataDTO.errorType.value {
     case .httpError:
       let errorCode = errorDataDTO.httpStatusCode ?? -1
-      configure(with: R.string.localizable.http_error(String(describing: errorCode)))
+      configure(with: R.string.localizable.http_error(String(describing: errorCode)), display: mode)
     case .requestTimOutError:
-      configure(with: R.string.localizable.request_timeout_error())
+      configure(with: R.string.localizable.request_timeout_error(), display: mode)
     case .malformedUrlError:
-      configure(with: R.string.localizable.malformed_url_error())
+      configure(with: R.string.localizable.malformed_url_error(), display: mode)
     case .unparsableResponseError:
-      configure(with: R.string.localizable.unreadable_result_error())
+      configure(with: R.string.localizable.unreadable_result_error(), display: mode)
     case .jsonSerializationError:
-      configure(with: R.string.localizable.unreadable_result_error())
+      configure(with: R.string.localizable.unreadable_result_error(), display: mode)
     case .unrecognizedApiKeyError:
-      configure(with: R.string.localizable.unauthorized_api_key_error())
+      configure(with: R.string.localizable.unauthorized_api_key_error(), display: mode)
     case .locationUnavailableError:
-      configure(with: R.string.localizable.location_unavailable_error())
+      configure(with: R.string.localizable.location_unavailable_error(), display: mode)
     case .locationAccessDenied:
-      configure(with: R.string.localizable.location_denied_error())
+      configure(with: R.string.localizable.location_denied_error(), display: mode)
     }
   }
   

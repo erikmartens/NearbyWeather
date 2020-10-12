@@ -1,0 +1,47 @@
+================================================================================
+Apache 2.0
+================================================================================
+
+Component: Firebase/Crashlytics
+License Text URL: https://github.com/firebase/firebase-android-sdk/blob/master/LICENSE
+Source Code: https://github.com/firebase/firebase-android-sdk
+
+================================================================================
+MIT
+================================================================================
+
+Component: Alamofire
+License Text URL: https://github.com/Alamofire/Alamofire/blob/master/LICENSE
+Source Code: https://github.com/Alamofire/Alamofire
+
+Component: APTimeZones
+License Text URL: https://github.com/Alterplay/APTimeZones/blob/master/LICENSE.txt
+Source Code: https://github.com/Alterplay/APTimeZones
+
+Component: fmdb
+License Text URL: https://github.com/ccgus/fmdb/blob/master/LICENSE.txt
+Source Code: https://github.com/ccgus/fmdb
+
+Component: TextFieldCounter
+License Text URL: https://github.com/serralvo/TextFieldCounter/blob/master/LICENSE
+Source Code: https://github.com/serralvo/TextFieldCounter
+
+Component: PKHUD
+License Text URL: https://github.com/pkluz/PKHUD/blob/master/LICENSE
+Source Code: https://github.com/pkluz/PKHUD
+
+Component: R.swift
+License Text URL: https://github.com/mac-cain13/R.swift/blob/master/License
+Source Code: https://github.com/mac-cain13/R.swift
+
+Component: RxCocoa, RxSwift
+License Text URL: https://github.com/ReactiveX/RxSwift/blob/master/LICENSE.md
+Source Code: https://github.com/ReactiveX/RxSwift
+
+Component: RxFlow
+License Text URL: https://github.com/RxSwiftCommunity/RxFlow/blob/master/LICENSE
+Source Code: https://github.com/RxSwiftCommunity/RxFlow
+
+Component: SwiftLint
+License Text URL: https://github.com/realm/SwiftLint/blob/master/LICENSE
+Source Code: https://github.com/realm/SwiftLint

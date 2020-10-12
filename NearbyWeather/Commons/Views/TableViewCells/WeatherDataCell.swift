@@ -29,7 +29,14 @@ class WeatherDataCell: UITableViewCell {
   @IBOutlet weak var windSpeedImageView: UIImageView!
   @IBOutlet weak var windspeedLabel: UILabel!
   
-  func configureWithWeatherDTO(_ weatherDTO: WeatherInformationDTO, isBookmark: Bool) {
+  /// Configures the current `WeatherDataCell` using the given `WeatherInformationDTO`.
+  /// Applies a dedicated style if the cell has been bookmarked or if the display mode is defined to `.dark`
+  /// - Parameters:
+  ///     - weatherDTO: Business object picked from API
+  ///     - isBookmark: Helps to the bubble color
+  ///     - mode: Bubble color will be darker if defined to `.dark`
+  ///
+  func configureWithWeatherDTO(_ weatherDTO: WeatherInformationDTO, isBookmark: Bool, mode: Constants.Theme.Mode) {
     self.weatherDataIdentifier = weatherDTO.cityID
     self.isBookmark = isBookmark
     
@@ -42,7 +49,9 @@ class WeatherDataCell: UITableViewCell {
       bubbleColor = ConversionWorker.isDayTime(for: weatherDTO.daytimeInformation, coordinates: weatherDTO.coordinates) ?? true
         ? Constants.Theme.Color.BrandColors.standardDay
         : Constants.Theme.Color.BrandColors.standardNight // default to blue colored cells
-      
+      if mode == .dark {
+        bubbleColor = bubbleColor.darker()
+      }
       textColor = .white
       borderWidth = 0
     case false:

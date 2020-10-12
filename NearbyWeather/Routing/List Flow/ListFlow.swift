@@ -68,12 +68,14 @@ private extension ListFlow {
   func summonWeatherListController() -> FlowContributors {
     let weatherListViewController = ListViewController(style: .grouped)
     rootViewController.setViewControllers([weatherListViewController], animated: false)
+    weatherListViewController.customRootViewController = rootViewController
     return .one(flowContributor: .contribute(withNext: weatherListViewController))
   }
   
   func summonEmptyWeatherListController() -> FlowContributors {
     let emptyWeatherListViewController = R.storyboard.emptyList.emptyListViewController()!
     rootViewController.setViewControllers([emptyWeatherListViewController], animated: false)
+    emptyWeatherListViewController.customRootViewController = rootViewController
     return .none
   }
   

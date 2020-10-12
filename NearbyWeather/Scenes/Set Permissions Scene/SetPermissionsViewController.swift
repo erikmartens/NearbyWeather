@@ -10,7 +10,7 @@ import UIKit
 import RxFlow
 import RxCocoa
 
-final class SetPermissionsViewController: UIViewController, Stepper {
+final class SetPermissionsViewController: CustomUIViewController, Stepper {
   
   // MARK: - Routing
   
@@ -22,6 +22,7 @@ final class SetPermissionsViewController: UIViewController, Stepper {
   
   // MARK: - Outlets
   
+  @IBOutlet var mainView: UIView!
   @IBOutlet weak var bubbleView: UIView!
   @IBOutlet weak var warningImageView: UIImageView!
   
@@ -33,7 +34,6 @@ final class SetPermissionsViewController: UIViewController, Stepper {
   override func viewDidLoad() {
     super.viewDidLoad()
     title = R.string.localizable.location_access()
-    configure()
     
     NotificationCenter.default.addObserver(
       self,
@@ -43,6 +43,10 @@ final class SetPermissionsViewController: UIViewController, Stepper {
     )
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+  }
+    
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     animatePulse()
@@ -59,22 +63,30 @@ final class SetPermissionsViewController: UIViewController, Stepper {
   }
   
   // MARK: - Helper Functions
-  
-  func configure() {    
+
+  /// Configures the elements displayed in this `UIViewController`.
+  /// Inherited from `CustomUIViewController`
+  ///
+  override func configure() {
+        
     bubbleView.layer.cornerRadius = 10
-    bubbleView.backgroundColor = .black
-    
+    bubbleView.backgroundColor = Constants.Theme.Color.BrandColors.standardDay
+    warningImageView.backgroundColor = Constants.Theme.Color.BrandColors.standardDay // Mandatory for iOS < 13, otherwise not displayed
+        
     descriptionLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-    descriptionLabel.textColor = .white
     descriptionLabel.text! = R.string.localizable.configure_location_permissions_description()
+    descriptionLabel.textColor = .white
     
     askPermissionsButton.setTitle(R.string.localizable.configure().uppercased(), for: .normal)
     askPermissionsButton.setTitleColor(.white, for: UIControl.State())
     askPermissionsButton.titleLabel?.font = .preferredFont(forTextStyle: .headline)
     askPermissionsButton.layer.cornerRadius = askPermissionsButton.bounds.height/2
     askPermissionsButton.layer.backgroundColor = Constants.Theme.Color.BrandColors.standardDay.cgColor
+        
+    mainView.backgroundColor = Constants.Theme.Color.ViewElement.background
+        
   }
-  
+    
   fileprivate func startAnimationTimer() {
     timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: (#selector(Self.animatePulse)), userInfo: nil, repeats: false)
   }

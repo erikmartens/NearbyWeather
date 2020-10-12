@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class EmptyListViewController: UIViewController {
+final class EmptyListViewController: CustomUIViewController {
   
   // MARK: - IBOutlets
   
@@ -68,4 +68,11 @@ final class EmptyListViewController: UIViewController {
     reloadButton.layer.cornerRadius = reloadButton.bounds.height/2
     reloadButton.layer.backgroundColor = Constants.Theme.Color.BrandColors.standardDay.cgColor
   }
+    
+  // MARK: -
+  
+  override func configure() {
+    // Does nothing
+  }
+    
 }

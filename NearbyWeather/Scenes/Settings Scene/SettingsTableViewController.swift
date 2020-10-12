@@ -10,7 +10,7 @@ import UIKit
 import RxFlow
 import RxCocoa
 
-final class SettingsTableViewController: UITableViewController, Stepper {
+final class SettingsTableViewController: CustomUITableViewController, Stepper {
   
   // MARK: - Routing
   
@@ -325,4 +325,9 @@ final class SettingsTableViewController: UITableViewController, Stepper {
     let alert = Factory.AlertController.make(fromType: .pushNotificationsDisabled)
     present(alert, animated: true, completion: nil)
   }
+    
+  override func configure() {
+    // Does nothing
+  }
+    
 }

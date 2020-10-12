@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -120,7 +120,6 @@
                                                                         </connections>
                                                                     </button>
                                                                 </subviews>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <constraints>
                                                                     <constraint firstItem="Sbr-Nj-Fvp" firstAttribute="centerX" secondItem="bYb-g6-KwD" secondAttribute="centerX" id="4To-r1-sgk"/>
                                                                     <constraint firstItem="Sbr-Nj-Fvp" firstAttribute="height" secondItem="bYb-g6-KwD" secondAttribute="height" id="A7G-Mm-qye"/>
@@ -142,7 +141,6 @@
                                                 </subviews>
                                             </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="9VD-Nn-WXt" secondAttribute="trailing" constant="15" id="Tgg-8x-MZn"/>
                                             <constraint firstItem="9VD-Nn-WXt" firstAttribute="top" secondItem="wqX-ZM-IkD" secondAttribute="top" constant="30" id="XOb-lI-hUe"/>
@@ -159,13 +157,12 @@
                                 </constraints>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="dea-Jv-t9w" firstAttribute="top" secondItem="o72-GK-PyM" secondAttribute="bottom" id="9hX-pr-2cO"/>
+                            <constraint firstItem="o72-GK-PyM" firstAttribute="top" secondItem="Yaf-73-dty" secondAttribute="bottom" id="FrU-3a-h8a"/>
                             <constraint firstAttribute="trailing" secondItem="o72-GK-PyM" secondAttribute="trailing" id="GDz-sW-EOb"/>
-                            <constraint firstItem="o72-GK-PyM" firstAttribute="top" secondItem="Yaf-73-dty" secondAttribute="bottom" id="abo-xB-ekU"/>
                             <constraint firstItem="o72-GK-PyM" firstAttribute="leading" secondItem="OBI-OV-vsC" secondAttribute="leading" id="gRp-43-Eg2"/>
                             <constraint firstItem="wqX-ZM-IkD" firstAttribute="width" secondItem="OBI-OV-vsC" secondAttribute="width" id="tIt-74-Pm0"/>
-                            <constraint firstItem="dea-Jv-t9w" firstAttribute="top" secondItem="o72-GK-PyM" secondAttribute="bottom" id="upm-OA-8uO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vXD-Id-Fmx"/>
                     </view>
@@ -175,6 +172,7 @@
                         <outlet property="descriptionLabel" destination="JxS-7G-MTw" id="JYw-TT-Gsc"/>
                         <outlet property="getInstructionsButtons" destination="2sb-Xb-4oL" id="N9o-75-Yfv"/>
                         <outlet property="inputTextField" destination="1tg-s0-slW" id="Mzv-k9-NLv"/>
+                        <outlet property="mainView" destination="OBI-OV-vsC" id="V7V-FV-FfR"/>
                         <outlet property="saveButton" destination="Sbr-Nj-Fvp" id="LZm-Nq-aLY"/>
                         <outlet property="saveButtonContainerView" destination="bYb-g6-KwD" id="fhk-G2-74Y"/>
                         <outlet property="warningImageView" destination="4tB-qs-Odu" id="6tn-6A-PEa"/>

@@ -6,4 +6,4 @@
  Copyright © 2019 Pierre-Yves Lapersonne. All rights reserved.
  */
 
-NSLocationWhenInUseUsageDescription = "NearbyWeather utilise votre position géographique dans le but de détrminer les villes à proximité et de vous librer les bulletins météorologiques basés sur ces données.";
+NSLocationWhenInUseUsageDescription = "NearbyWeather utilise votre position géographique dans le but de détrminer les villes à proximité et de vous livrer les bulletins météorologiques basés sur ces données.";

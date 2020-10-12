@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -45,7 +45,6 @@
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                         </subviews>
-                                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <constraints>
                                                                             <constraint firstItem="jMh-jf-Sjs" firstAttribute="centerX" secondItem="Q4m-yC-MZw" secondAttribute="centerX" id="HhU-HN-Lkq"/>
                                                                             <constraint firstAttribute="bottom" secondItem="jMh-jf-Sjs" secondAttribute="bottom" id="hEd-Rv-Byy"/>
@@ -392,7 +391,6 @@
                                                                         </connections>
                                                                     </button>
                                                                 </subviews>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstItem="n13-JM-w36" firstAttribute="centerX" secondItem="lns-TN-hI1" secondAttribute="centerX" id="0iy-p3-H0O"/>
                                                                     <constraint firstItem="n13-JM-w36" firstAttribute="top" secondItem="lns-TN-hI1" secondAttribute="top" constant="10" id="XNl-4c-BRb"/>
@@ -404,7 +402,6 @@
                                                 </subviews>
                                             </stackView>
                                         </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="tdB-46-Hza" secondAttribute="trailing" constant="20" id="gEw-Dc-EEF"/>
                                             <constraint firstAttribute="bottom" secondItem="tdB-46-Hza" secondAttribute="bottom" id="kWV-ZY-SI8"/>
@@ -450,6 +447,7 @@
                         <outlet property="humidityLabel" destination="IWf-AB-U9X" id="2aG-bU-gEr"/>
                         <outlet property="humidityNoteLabel" destination="tl7-vY-jP3" id="CgA-J2-LUI"/>
                         <outlet property="locationStackView" destination="FxE-TE-AKp" id="Nif-hH-rKT"/>
+                        <outlet property="mainView" destination="obJ-OY-32K" id="gzE-su-gnz"/>
                         <outlet property="mapView" destination="SHu-fg-dd5" id="TgU-Tr-RcH"/>
                         <outlet property="pressureImageView" destination="8Qs-Gw-dnd" id="Bjc-bL-cEA"/>
                         <outlet property="pressureLabel" destination="gYh-Xe-PqW" id="6Nd-xD-RY6"/>

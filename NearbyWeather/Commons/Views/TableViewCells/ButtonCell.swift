@@ -53,7 +53,8 @@ extension ButtonCell {
     leftButtonTitle: String,
     rightButtonTitle: String,
     leftButtonHandler: @escaping ((UIButton) -> Void),
-    rightButtonHandler: @escaping ((UIButton) -> Void)
+    rightButtonHandler: @escaping ((UIButton) -> Void),
+    displayMode mode: Constants.Theme.Mode
   ) {
     contentLabel.text = title
     
@@ -65,6 +66,15 @@ extension ButtonCell {
     
     rightButton.setTitle(rightButtonTitle, for: UIControl.State())
     rightButton.addTarget(self, action: #selector(ButtonCell.rightButtonPressed(_:)), for: .touchUpInside)
+    
+    if mode == .dark {
+      [leftButton, rightButton].forEach {
+        var backgroundColor = UIColor(cgColor: $0.layer.backgroundColor!)
+        backgroundColor = backgroundColor.darker(by: -50)
+        $0.layer.backgroundColor = backgroundColor.cgColor
+      }
+    }
+    
   }
 }
 

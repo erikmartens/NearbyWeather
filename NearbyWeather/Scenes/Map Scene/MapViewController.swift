@@ -11,7 +11,7 @@ import MapKit
 import RxFlow
 import RxCocoa
 
-final class MapViewController: UIViewController, Stepper {
+final class MapViewController: CustomUIViewController, Stepper {
   
   private lazy var mapTypeBarButton = {
     UIBarButtonItem(
@@ -82,6 +82,14 @@ final class MapViewController: UIViewController, Stepper {
   
   deinit {
     NotificationCenter.default.removeObserver(self)
+  }
+
+  // MARK : -
+    
+  /// Udpates the map annotations.
+  /// Called when the view did appear.
+  override func configure() {
+    configureMapAnnotations()
   }
 }
 
@@ -244,6 +252,9 @@ extension MapViewController: MKMapViewDelegate {
         ? Constants.Theme.Color.BrandColors.standardDay
         : Constants.Theme.Color.BrandColors.standardNight // default to blue colored cells
       
+      if displayMode == .dark {
+        fillColor = fillColor.darker()
+      }
       textColor = .white
     } else {
       fillColor = .white

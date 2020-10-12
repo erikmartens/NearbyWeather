@@ -29,7 +29,7 @@ enum ListType: CaseIterable {
   }
 }
 
-final class ListViewController: UITableViewController, Stepper {
+final class ListViewController: CustomUITableViewController, Stepper {
   
   private lazy var listTypeBarButton = {
     UIBarButtonItem(
@@ -88,11 +88,7 @@ final class ListViewController: UITableViewController, Stepper {
       name: Notification.Name(rawValue: Constants.Keys.NotificationCenter.kWeatherServiceDidUpdate),
       object: nil
     )
-  }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    configure()
+    
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -113,19 +109,29 @@ final class ListViewController: UITableViewController, Stepper {
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
+    
+  // MARK: - Helper functions
+    
+  /// Configures the elements displayed in this `UIViewController`.
+  /// Inherited from `CustomUIViewController`
+  ///
+  override func configure() {
+          
+    configureNavigationTitle()
+    configureLastRefreshDate()
+    configureButtons()
+      
+    refreshControl?.addTarget(self, action: #selector(Self.updateWeatherData), for: .valueChanged)
+        
+    tableView.reloadData()
+    
+  }
+    
 }
 
 private extension ListViewController {
   
   // MARK: - Private Helpers
-  
-  private func configure() {
-    configureNavigationTitle()
-    configureLastRefreshDate()
-    configureButtons()
-    
-    refreshControl?.addTarget(self, action: #selector(Self.updateWeatherData), for: .valueChanged)
-  }
   
   @objc private func reconfigureOnWeatherDataServiceDidUpdate() {
     refreshControl?.endRefreshing()
@@ -266,7 +272,7 @@ extension ListViewController {
     
     if WeatherDataService.shared.apiKeyUnauthorized {
       let errorDataDTO = (WeatherDataService.shared.bookmarkedWeatherDataObjects?.first { $0.errorDataDTO != nil})?.errorDataDTO ?? WeatherDataService.shared.nearbyWeatherDataObject?.errorDataDTO
-      alertCell.configureWithErrorDataDTO(errorDataDTO)
+      alertCell.configureWithErrorDataDTO(errorDataDTO, display: displayMode)
       return alertCell
     }
     
@@ -274,30 +280,30 @@ extension ListViewController {
     case .bookmarked:
       guard let bookmarkedWeatherDataObjects = WeatherDataService.shared.bookmarkedWeatherDataObjects,
         !bookmarkedWeatherDataObjects.isEmpty else {
-          alertCell.configure(with: R.string.localizable.empty_bookmarks_message())
+            alertCell.configure(with: R.string.localizable.empty_bookmarks_message(), display: displayMode)
           return alertCell
       }
       guard let weatherDTO = bookmarkedWeatherDataObjects[indexPath.row].weatherInformationDTO else {
-        alertCell.configureWithErrorDataDTO(WeatherDataService.shared.bookmarkedWeatherDataObjects?[indexPath.row].errorDataDTO)
+        alertCell.configureWithErrorDataDTO(WeatherDataService.shared.bookmarkedWeatherDataObjects?[indexPath.row].errorDataDTO, display: displayMode)
         return alertCell
       }
-      weatherCell.configureWithWeatherDTO(weatherDTO, isBookmark: true)
+      weatherCell.configureWithWeatherDTO(weatherDTO, isBookmark: true, mode: displayMode)
       return weatherCell
     case .nearby:
       if !UserLocationService.shared.locationPermissionsGranted {
         let errorDataDTO = ErrorDataDTO(errorType: ErrorDataDTO.ErrorType(value: .locationAccessDenied), httpStatusCode: nil)
-        alertCell.configureWithErrorDataDTO(errorDataDTO)
+        alertCell.configureWithErrorDataDTO(errorDataDTO, display: displayMode)
         return alertCell
       }
       guard let nearbyWeatherDataObject = WeatherDataService.shared.nearbyWeatherDataObject else {
-        alertCell.configure(with: R.string.localizable.empty_nearby_locations_message())
+        alertCell.configure(with: R.string.localizable.empty_nearby_locations_message(), display: displayMode)
         return alertCell
       }
       guard let weatherDTO = nearbyWeatherDataObject.weatherInformationDTOs?[indexPath.row] else {
-        alertCell.configureWithErrorDataDTO(WeatherDataService.shared.nearbyWeatherDataObject?.errorDataDTO)
+        alertCell.configureWithErrorDataDTO(WeatherDataService.shared.nearbyWeatherDataObject?.errorDataDTO, display: displayMode)
         return alertCell
       }
-      weatherCell.configureWithWeatherDTO(weatherDTO, isBookmark: false)
+      weatherCell.configureWithWeatherDTO(weatherDTO, isBookmark: false, mode: displayMode)
       return weatherCell
     }
   }

@@ -11,7 +11,7 @@ import RxFlow
 import RxCocoa
 import PKHUD
 
-final class WeatherLocationSelectionTableViewController: UITableViewController, Stepper {
+final class WeatherLocationSelectionTableViewController: CustomUITableViewController, Stepper {
   
   // MARK: - Routing
   
@@ -90,6 +90,13 @@ final class WeatherLocationSelectionTableViewController: UITableViewController, 
     HUD.flash(.success, delay: 1.0)
     navigationController?.popViewController(animated: true)
   }
+    
+  // MARK : -
+    
+  override func configure() {
+  // Does nothing
+  }
+    
 }
 
 extension WeatherLocationSelectionTableViewController: UISearchResultsUpdating {

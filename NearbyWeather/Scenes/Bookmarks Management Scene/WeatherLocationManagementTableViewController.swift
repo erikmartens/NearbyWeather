@@ -10,7 +10,7 @@ import UIKit
 import RxFlow
 import RxCocoa
 
-final class WeatherLocationManagementTableViewController: UITableViewController, Stepper {
+final class WeatherLocationManagementTableViewController: CustomUITableViewController, Stepper {
   
   // MARK: - Routing
   
@@ -119,5 +119,11 @@ final class WeatherLocationManagementTableViewController: UITableViewController,
                         message: R.string.localizable.delete_last_bookmark_message())
     )
     present(alert, animated: true, completion: nil)
+  }
+    
+  // MARK : -
+    
+  override func configure() {
+    // Does nothing
   }
 }

@@ -68,18 +68,21 @@ private extension SettingsFlow {
   func summonSettingsController() -> FlowContributors {
     let settingsViewController = SettingsTableViewController(style: SettingsFlow.preferredTableViewStyle())
     rootViewController.setViewControllers([settingsViewController], animated: false)
+    settingsViewController.customRootViewController = rootViewController
     return .one(flowContributor: .contribute(withNext: settingsViewController))
   }
   
   func summonAboutController() -> FlowContributors {
     let aboutController = AboutAppTableViewController(style: SettingsFlow.preferredTableViewStyle())
     rootViewController.pushViewController(aboutController, animated: true)
+    aboutController.customRootViewController = rootViewController
     return .one(flowContributor: .contribute(withNext: aboutController))
   }
   
   func summonApiKeyEditController() -> FlowContributors {
     let apiKeyEditController = SettingsInputTableViewController(style: SettingsFlow.preferredTableViewStyle())
     rootViewController.pushViewController(apiKeyEditController, animated: true)
+    apiKeyEditController.customRootViewController = rootViewController
     return .one(flowContributor: .contribute(withNext: apiKeyEditController))
   }
   
@@ -89,12 +92,14 @@ private extension SettingsFlow {
     }
     let locationManagementController = WeatherLocationManagementTableViewController(style: SettingsFlow.preferredTableViewStyle())
     rootViewController.pushViewController(locationManagementController, animated: true)
+    locationManagementController.customRootViewController = rootViewController
     return .one(flowContributor: .contribute(withNext: locationManagementController))
   }
   
   func summonAddLocationController() -> FlowContributors {
     let addLocationController = WeatherLocationSelectionTableViewController(style: SettingsFlow.preferredTableViewStyle())
     rootViewController.pushViewController(addLocationController, animated: true)
+    addLocationController.customRootViewController = rootViewController
     return .one(flowContributor: .contribute(withNext: addLocationController))
   }
   

@@ -22,7 +22,7 @@ extension WeatherDetailViewController {
   }
 }
 
-final class WeatherDetailViewController: UIViewController, Stepper {
+final class WeatherDetailViewController: CustomUIViewController, Stepper {
 
   // MARK: - Routing
   
@@ -38,6 +38,8 @@ final class WeatherDetailViewController: UIViewController, Stepper {
   
   /* Outlets */
   
+  @IBOutlet var mainView: UIView!
+    
   @IBOutlet weak var conditionSymbolLabel: UILabel!
   @IBOutlet weak var conditionNameLabel: UILabel!
   @IBOutlet weak var conditionDescriptionLabel: UILabel!
@@ -83,6 +85,11 @@ final class WeatherDetailViewController: UIViewController, Stepper {
   
   @IBOutlet var separatorLineHeightConstraints: [NSLayoutConstraint]!
   
+  /* Misc. */
+    
+  /// To ensure the dark mode display has been alanged only one time, prevent for example to make lighter and lighter labels
+  private var didManageDisplayMode: Bool = false
+    
   // MARK: - ViewController Lifecycle
   
   override func viewDidLoad() {
@@ -98,18 +105,21 @@ final class WeatherDetailViewController: UIViewController, Stepper {
     mapView.delegate = self
     mapView.mapType = PreferencesDataService.shared.preferredMapType
     
-    configureMap()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
     configure()
+    configureMap()
   }
   
   // MARK: - Private Helpers
   
-  private func configure() {
+  /// Configures the elements displayed in this `UIViewController`.
+  /// Inherited from `CustomUIViewController`
+  ///
+  override func configure() {
     
     let isDayTime = ConversionWorker.isDayTime(for: weatherDTO.daytimeInformation, coordinates: weatherDTO.coordinates) ?? true
     
@@ -117,6 +127,9 @@ final class WeatherDetailViewController: UIViewController, Stepper {
     var navigationTintColor: UIColor
     if isBookmark {
       navigationBarTintColor = isDayTime ? Constants.Theme.Color.BrandColors.standardDay : Constants.Theme.Color.BrandColors.standardNight
+      if displayMode == .dark {
+        navigationBarTintColor = navigationBarTintColor.darker()
+      }
       navigationTintColor = .white
     } else {
       navigationBarTintColor = .white
@@ -204,6 +217,43 @@ final class WeatherDetailViewController: UIViewController, Stepper {
     } else {
       windDirectionStackView.isHidden = true
     }
+    
+    if displayMode == .dark {
+        mainView.backgroundColor = Constants.Theme.Color.ViewElement.background
+    } else {
+        mainView.backgroundColor = UIColor.white
+    }
+    
+    /// Allows to have white/dark colors
+    let mainLabels = [conditionNameLabel, temperatureLabel]
+    mainLabels.forEach {
+        $0?.textColor = Constants.Theme.Color.ContentElement.title
+    }
+    
+    // For small labels and theirs icons, if display mode is dark mode, make their tint color lighter
+    if displayMode == .dark && !didManageDisplayMode {
+        
+        didManageDisplayMode = true
+        
+        let lighterColorRatio = CGFloat(20.0)
+        let subLabels = [sunriseNoteLabel, sunriseLabel, sunsetNoteLabel, sunsetLabel, cloudCoverNoteLabel, cloudCoverLabel,
+                        humidityNoteLabel, humidityLabel, pressureNoteLabel, pressureLabel, windSpeedNoteLabel, windSpeedLabel,
+                        windDirectionNoteLabel, windDirectionLabel, coordinatesNoteLabel, coordinatesLabel]
+        subLabels.forEach {
+            if let color = $0?.textColor {
+                $0?.textColor = color.lighter(by: lighterColorRatio)
+            }
+        }
+        let iconsLabels = [sunriseImageView, sunsetImageView, cloudCoverImageView, humidityImageView, pressureImageView,
+                            windSpeedImageView, windDirectionImageView, coordinatesImageView]
+        iconsLabels.forEach {
+            if let color = $0?.tintColor {
+                $0?.tintColor = color.lighter(by: lighterColorRatio)
+            }
+        }
+    }
+    
+    
   }
   
   private func configureMap() {
@@ -281,10 +331,14 @@ extension WeatherDetailViewController: MKMapViewDelegate {
     var textColor: UIColor
     
     if annotation.isBookmark {
+        
       fillColor = annotation.isDayTime ?? true
         ? Constants.Theme.Color.BrandColors.standardDay
         : Constants.Theme.Color.BrandColors.standardNight // default to blue colored cells
       
+        if displayMode == .dark {
+            fillColor = fillColor.darker()
+        }
       textColor = .white
     } else {
       fillColor = .white

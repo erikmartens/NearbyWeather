@@ -8,8 +8,22 @@
 
 import UIKit
 
+/// Composes `Constants` enumeration with a look and feel theme
+/// Declares `Color` to use and also display `Mode`
+///
 extension Constants.Theme {
+  
+  /// The bunch of colros ot use in the app
   enum Color {}
+    
+  /// The display mode to use (e.g. in `UIViewController`: dark mode or light mode)
+  enum Mode {
+    /// Light mode has been choosen, needs to change colors, or iOS < 13.0
+    case light
+    /// Dark mode has been choosen
+    case dark
+  }
+    
 }
 
 extension Constants.Theme.Color {
@@ -54,7 +68,7 @@ extension Constants.Theme.Color {
     
     static var background: UIColor {
       guard #available(iOS 13, *) else {
-        return UIColor(red: 0, green: 0, blue: 0) // TODO
+        return UIColor(red: 255, green: 255, blue: 255)
       }
       return UIColor.systemBackground
     }

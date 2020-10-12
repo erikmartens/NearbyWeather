@@ -11,7 +11,7 @@ import RxFlow
 import RxCocoa
 import MessageUI
 
-final class AboutAppTableViewController: UITableViewController, Stepper {
+final class AboutAppTableViewController: CustomUITableViewController, Stepper {
   
   private lazy var thirdPartyLibraries: [ThirdPartyLibraryDTO] = {
     DataStorageWorker.retrieveJsonFromFile(with: R.file.thirdPartyLibrariesJson.name,
@@ -202,7 +202,8 @@ final class AboutAppTableViewController: UITableViewController, Stepper {
               .append(contentsOf: R.string.localizable.report_issue(), delimiter: .custom(string: " - ")),
             withMessage: R.string.localizable.email_salutation()
           )
-        }
+        },
+        displayMode: displayMode
       )
       return buttonCell
     case 2:
@@ -238,6 +239,13 @@ final class AboutAppTableViewController: UITableViewController, Stepper {
       return UITableViewCell()
     }
   }
+    
+  // MARK : -
+    
+  override func configure() {
+    // Does nothing
+  }
+    
 }
 
   // MARK: - Private Helpers
@@ -258,6 +266,7 @@ private extension AboutAppTableViewController {
     
     navigationController?.present(mailController, animated: true, completion: nil)
   }
+    
 }
 
 extension AboutAppTableViewController: MFMailComposeViewControllerDelegate {

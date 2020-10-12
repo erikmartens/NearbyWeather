@@ -68,6 +68,7 @@ private extension MapFlow {
   func summonWeatherMapController() -> FlowContributors {
     let mapViewController = MapViewController()
     rootViewController.setViewControllers([mapViewController], animated: false)
+    mapViewController.customRootViewController = rootViewController
     return .one(flowContributor: .contribute(withNext: mapViewController))
   }
   

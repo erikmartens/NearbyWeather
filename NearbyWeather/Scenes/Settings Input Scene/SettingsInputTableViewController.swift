@@ -11,7 +11,7 @@ import RxFlow
 import RxCocoa
 import PKHUD
 
-final class SettingsInputTableViewController: UITableViewController, Stepper {
+final class SettingsInputTableViewController: CustomUITableViewController, Stepper {
   
   // MARK: - Routing
   
@@ -105,6 +105,13 @@ final class SettingsInputTableViewController: UITableViewController, Stepper {
     WeatherDataService.shared.update(withCompletionHandler: nil)
     return true
   }
+    
+  // MARK : -
+    
+  override func configure() {
+      // Does nothing
+  }
+    
 }
 
 extension SettingsInputTableViewController: UITextFieldDelegate {

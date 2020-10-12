@@ -1,5 +1,5 @@
 //
-//  WelcomeScreenViewController.swift
+//  SetApiKeyViewController.swift
 //  NearbyWeather
 //
 //  Created by Erik Maximilian Martens on 15.04.17.
@@ -11,7 +11,7 @@ import RxFlow
 import RxCocoa
 import TextFieldCounter
 
-final class SetApiKeyViewController: UIViewController, Stepper {
+final class SetApiKeyViewController: CustomUIViewController, Stepper {
   
   // MARK: - Routing
   
@@ -20,9 +20,10 @@ final class SetApiKeyViewController: UIViewController, Stepper {
   // MARK: - Properties
   
   private var timer: Timer?
-  
+    
   // MARK: - Outlets
   
+  @IBOutlet var mainView: UIView!
   @IBOutlet weak var bubbleView: UIView!
   @IBOutlet weak var warningImageView: UIImageView!
   
@@ -38,7 +39,6 @@ final class SetApiKeyViewController: UIViewController, Stepper {
   override func viewDidLoad() {
     super.viewDidLoad()
     title = R.string.localizable.welcome()
-    configure()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -60,28 +60,36 @@ final class SetApiKeyViewController: UIViewController, Stepper {
   
   // MARK: - Helper Functions
   
-  func configure() {    
+  /// Configures the elements displayed in this `UIViewController`.
+  /// Inherited from `CustomUIViewController`
+  ///
+  override func configure() {
+    
     bubbleView.layer.cornerRadius = 10
-    bubbleView.backgroundColor = .black
+    bubbleView.backgroundColor = Constants.Theme.Color.BrandColors.standardDay
+    warningImageView.backgroundColor = Constants.Theme.Color.BrandColors.standardDay // Mandatory for iOS < 13, otherwise not displayed
     
     descriptionLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-    descriptionLabel.textColor = .white
     descriptionLabel.text! = R.string.localizable.welcome_api_key_description()
+    descriptionLabel.textColor = .white
     
-    inputTextField.counterColor = inputTextField.textColor ?? .black
     inputTextField.limitColor = Constants.Theme.Color.InteractableElement.standardTint
-    inputTextField.textColor = .lightGray
-    inputTextField.tintColor = .lightGray
+    inputTextField.textColor = Constants.Theme.Color.ContentElement.title
+    inputTextField.tintColor = Constants.Theme.Color.ContentElement.title
+    inputTextField.counterColor = inputTextField.textColor ?? .black
     
-    saveButton.setTitle(R.string.localizable.save().uppercased(), for: .normal)
     saveButton.setTitleColor(.white, for: UIControl.State())
     saveButton.titleLabel?.font = .preferredFont(forTextStyle: .headline)
     saveButton.layer.cornerRadius = saveButton.bounds.height/2
     saveButton.layer.backgroundColor = Constants.Theme.Color.BrandColors.standardDay.cgColor
-    
+    saveButton.setTitle(R.string.localizable.save().uppercased(), for: .normal)
+
     getInstructionsButtons.setTitle(R.string.localizable.get_api_key_description().uppercased(), for: .normal)
     getInstructionsButtons.setTitleColor(Constants.Theme.Color.InteractableElement.standardButton, for: .normal)
     getInstructionsButtons.setTitleColor(Constants.Theme.Color.InteractableElement.standardButton, for: .highlighted)
+  
+    mainView.backgroundColor = Constants.Theme.Color.ViewElement.background
+    
   }
   
   fileprivate func startAnimationTimer() {
@@ -126,6 +134,7 @@ final class SetApiKeyViewController: UIViewController, Stepper {
   @IBAction func didTapGetInstructionsButton(_ sender: UIButton) {
     presentSafariViewController(for: Constants.Urls.kOpenWeatherMapInstructionsUrl)
   }
+    
 }
 
 extension SetApiKeyViewController: CAAnimationDelegate {
