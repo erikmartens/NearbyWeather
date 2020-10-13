@@ -81,7 +81,7 @@ final class ListViewController: UITableViewController, Stepper {
   override func viewDidLoad() {
     super.viewDidLoad()
     refreshControl = UIRefreshControl()
-    
+    registerForPreviewing(with: self, sourceView: tableView)
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(Self.reconfigureOnWeatherDataServiceDidUpdate),
@@ -113,6 +113,12 @@ final class ListViewController: UITableViewController, Stepper {
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
+    
+  // MARK: - Peek and pop specific
+    
+  /// Reference to the last selected cell so as to be able to load the suitable step for the good item when the users goes further in the peek-and-pop operation
+  var lastSelectedCell: WeatherDataCell?
+    
 }
 
 private extension ListViewController {
@@ -306,9 +312,7 @@ extension ListViewController {
     guard WeatherDataService.shared.hasDisplayableData else {
       return
     }
-    
     tableView.deselectRow(at: indexPath, animated: true)
-    
     guard let selectedCell = tableView.cellForRow(at: indexPath) as? WeatherDataCell else {
       return
     }
@@ -319,4 +323,64 @@ extension ListViewController {
       )
     )
   }
+}
+
+// MARK: - UIViewControllerPreviewingDelegate
+
+/// `UIViewControllerPreviewingDelegate` for the `ListViewController` so as to implement the peek-and-pop feature.
+/// Because we do not really use storyboards and segue here, but RxFlow, we should define some behavior at this level.
+///
+extension ListViewController: UIViewControllerPreviewingDelegate {
+        
+  /// Defines the rectangle for rendering and builds the suitable `UIViewController` for the selected item.
+  /// - Parameters:
+  ///     - previewingContext: The context for drawings
+  ///     - location: The location where the user taps
+  /// - Returns: The view controller to preview
+  ///
+  func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+    if let index = tableView.indexPathForRow(at: location) {
+      previewingContext.sourceRect = tableView.rectForRow(at: index)
+      return buildDetailsViewController(for: index)
+        }
+    return nil
+  }
+    
+  /// Triggered when the user goes further in the peek and pop process.
+  /// Here uses RxFlow to load the step for the selected item/
+  /// Uses the `lastSelectedCell` property os as to get the cell's details for the view controller to ue.
+  /// - Parameters:
+  ///     - previewingContext: Context for rendering
+  ///     - viewControllerToCommit: Not used
+  ///
+  func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+    steps.accept(
+      ListStep.weatherDetails(
+      // lastSelectedCell here will be always defined because defined in buildDetailsViewController(for:)
+      // which is always and only called before previewingContext(_:commit:)
+      identifier: lastSelectedCell!.weatherDataIdentifier,
+      isBookmark: lastSelectedCell!.isBookmark
+      )
+    )
+  }
+    
+  // MARK: - Specific
+    
+  /// Using the index path of the embeded `tableView`, builds a `UIViewController` for weather details.
+  /// This method ha sbeen defined for peek and pop specific needs and doe snot rely on RxFlow.
+  /// Defines the `lastSelectedCell` for the pop operation.
+  /// - Parameter index: The index of the table view to sue to get the weather details values
+  /// - Returns: An intance of `WeatherDetailViewController`
+  ///
+  private func buildDetailsViewController(for index: IndexPath) -> UIViewController? {
+    guard let selectedCell = tableView.cellForRow(at: index) as? WeatherDataCell else {
+      return nil
+    }
+    lastSelectedCell = selectedCell // Will be never nil here
+    guard let weatherDTO = WeatherDataService.shared.weatherDTO(forIdentifier: lastSelectedCell!.weatherDataIdentifier) else {
+      return nil
+    }
+    return WeatherDetailViewController.instantiateFromStoryBoard(weatherDTO: weatherDTO, isBookmark: lastSelectedCell!.isBookmark)
+  }
+    
 }
