@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   private var backgroundTaskId: UIBackgroundTaskIdentifier = .invalid
   
   // MARK: - Functions
-  
+    
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     instantiateServices()
     instantiateApplicationUserInterface()
@@ -34,8 +34,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     SettingsBundleTransferService.shared.updateSystemSettings()
-    
+  
     return true
+  }
+  
+  /// Allows to deal with 3D-Touch actions.
+  /// Triggers the handler which will process the selected shortcut action.
+  /// - Parameters:
+  ///   - application:
+  ///   - shortcutItem:
+  ///   - completionHandler:
+  ///
+  func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+    completionHandler(handleShortcut(item: shortcutItem))
+  }
+  
+  /// Using the given `item` deal with the action to process.
+  ///
+  /// Because RxFlow is not really ready for 3D-Touch quick actions, it is a bit tricky to handle a quick action from app icon to
+  /// the the ad-bookmark-location screen. Thus we stops before, at tab at index 2 to finally let user click on the item.
+  ///
+  /// - Parameter item: The selected item
+  /// - Returns: True if the item has been managed, false otherwise
+  ///
+  private func handleShortcut(item: UIApplicationShortcutItem) -> Bool {
+    guard let shortcutIdentifier = Constants.ShortcutIdentifier(fullIdentifier: item.type) else {
+      return false
+    }
+    guard let tabBarController = UIApplication.shared.windows.first!.rootViewController as? UITabBarController else {
+      return false
+    }
+    switch shortcutIdentifier {
+    case .addBookmarkedLocation:
+      tabBarController.selectedIndex = 2 // Tab at index 2 contains the item to cick on to add new bookmark
+      return true
+    case .weatherDetailsOfBookmarkedLocation:
+      tabBarController.selectedIndex = 0 // Bookmarked location weather details is on tab at index 0
+      return true
+    }
   }
   
   func applicationDidBecomeActive(_ application: UIApplication) {

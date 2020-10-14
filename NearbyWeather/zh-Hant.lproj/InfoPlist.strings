@@ -7,3 +7,8 @@
  */
 
 NSLocationWhenInUseUsageDescription = "NearbyWeather正在使用您的位置，根據這個資料來確定附近的城市並傳送天氣資訊。";
+
+3D_touch_shortcut_addbookmarkedlocation_title = "書籤";
+3D_touch_shortcut_addbookmarkedlocation_subtitle = "新增一個書籤";
+3D_touch_shortcut_weatherdetailsofbookmarked_title = "書籤";
+3D_touch_shortcut_weatherdetailsofbookmarked_subtitle = "列表";

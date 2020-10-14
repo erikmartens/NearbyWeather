@@ -7,3 +7,8 @@
  */
 
 NSLocationWhenInUseUsageDescription = "NearbyWeather nutzt Ihren Standort, um Wetterdaten für Städte in Ihrem Umkreis abzurufen und anzuzeigen.";
+
+3D_touch_shortcut_addbookmarkedlocation_title = "Gespeicherte Orte";
+3D_touch_shortcut_addbookmarkedlocation_subtitle = "Ort Hinzufügen";
+3D_touch_shortcut_weatherdetailsofbookmarked_title = "Gespeicherte Orte";
+3D_touch_shortcut_weatherdetailsofbookmarked_subtitle = "Liste";

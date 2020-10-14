@@ -7,3 +7,8 @@
  */
 
 NSLocationWhenInUseUsageDescription = "NearbyWeather is using your location, in order to determine nearby cities and deliver weather information based on this data.";
+
+3D_touch_shortcut_addbookmarkedlocation_title = "Bookmarked";
+3D_touch_shortcut_addbookmarkedlocation_subtitle = "Add a Bookmark";
+3D_touch_shortcut_weatherdetailsofbookmarked_title = "Bookmarked";
+3D_touch_shortcut_weatherdetailsofbookmarked_subtitle = "List";

@@ -51,5 +51,28 @@
 	</array>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>add_bookmark</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>3D_touch_shortcut_addbookmarkedlocation_title</string>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>3D_touch_shortcut_addbookmarkedlocation_subtitle</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).addBookmarkedLocation</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>tabbar_list_ios11</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>3D_touch_shortcut_weatherdetailsofbookmarked_title</string>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>3D_touch_shortcut_weatherdetailsofbookmarked_subtitle</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER).weatherDetailsOfBookmarkedLocation</string>
+		</dict>
+	</array>
 </dict>
 </plist>

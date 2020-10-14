@@ -7,3 +7,9 @@
  */
 
 NSLocationWhenInUseUsageDescription = "NearbyWeather utilise votre position géographique dans le but de détrminer les villes à proximité et de vous librer les bulletins météorologiques basés sur ces données.";
+
+3D_touch_shortcut_addbookmarkedlocation_title = "Favoris";
+3D_touch_shortcut_addbookmarkedlocation_subtitle = "Ajouter une position";
+3D_touch_shortcut_weatherdetailsofbookmarked_title = "Favoris";
+3D_touch_shortcut_weatherdetailsofbookmarked_subtitle = "Liste";
+
