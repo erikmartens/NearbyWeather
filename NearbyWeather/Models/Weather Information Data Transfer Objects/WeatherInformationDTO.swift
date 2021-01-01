@@ -15,7 +15,7 @@ import CoreLocation
  * This DTO therefore does not exactly mirror the server response
  */
 
-struct WeatherInformationArrayWrapper: Codable {
+struct WeatherInformationListDTO: Codable {
   var list: [WeatherInformationDTO]
   
   enum CodingKeys: String, CodingKey {

@@ -86,16 +86,38 @@ PODS:
   - R.swift (5.0.3):
     - R.swift.Library (~> 5.0.0)
   - R.swift.Library (5.0.1)
+  - Realm (4.4.1):
+    - Realm/Headers (= 4.4.1)
+  - Realm/Headers (4.4.1)
+  - RealmSwift (4.4.1):
+    - Realm (= 4.4.1)
+  - RxAlamofire (5.1.0):
+    - RxAlamofire/Core (= 5.1.0)
+  - RxAlamofire/Core (5.1.0):
+    - Alamofire (~> 4.8)
+    - RxSwift (~> 5.0)
   - RxCocoa (5.1.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
+  - RxCoreLocation (1.4.2):
+    - RxCoreLocation/Core (= 1.4.2)
+  - RxCoreLocation/Core (1.4.2):
+    - RxCocoa (~> 5.1)
+    - RxSwift (~> 5.1)
   - RxFlow (2.7.0):
     - RxCocoa (>= 5.0.0)
     - RxSwift (>= 5.0.0)
+  - RxOptional (4.1.0):
+    - RxCocoa (~> 5)
+    - RxSwift (~> 5)
+  - RxRealm (2.0.0):
+    - RealmSwift (~> 4.0)
+    - RxSwift (~> 5.0)
   - RxRelay (5.1.1):
     - RxSwift (~> 5)
   - RxSwift (5.1.1)
   - SwiftLint (0.38.2)
+  - Swinject (2.7.1)
   - TextFieldCounter (1.1.0)
 
 DEPENDENCIES:
@@ -106,10 +128,16 @@ DEPENDENCIES:
   - FMDB (~> 2.7.5)
   - PKHUD (~> 5.3.0)
   - R.swift (= 5.0.3)
+  - RealmSwift (~> 4.4.1)
+  - RxAlamofire (~> 5.1.0)
   - RxCocoa (~> 5.1.1)
+  - RxCoreLocation (~> 1.4.2)
   - RxFlow (~> 2.7.0)
+  - RxOptional (~> 4.1.0)
+  - RxRealm (~> 2.0.0)
   - RxSwift (~> 5.1.1)
   - SwiftLint (~> 0.38.2)
+  - Swinject (~> 2.7.1)
   - TextFieldCounter (~> 1.1.0)
 
 SPEC REPOS:
@@ -133,11 +161,18 @@ SPEC REPOS:
     - PromisesObjC
     - R.swift
     - R.swift.Library
+    - Realm
+    - RealmSwift
+    - RxAlamofire
     - RxCocoa
+    - RxCoreLocation
     - RxFlow
+    - RxOptional
+    - RxRealm
     - RxRelay
     - RxSwift
     - SwiftLint
+    - Swinject
     - TextFieldCounter
 
 EXTERNAL SOURCES:
@@ -172,13 +207,20 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   R.swift: f5a87643b91ea569d23d6afb3eee9c743edde239
   R.swift.Library: cfe85d569d9bae6cb262922db130e7c3a7a5fad1
+  Realm: 4eb04d7487bd43c0581256f40b424eafb711deff
+  RealmSwift: 3eb8924ff7100df5928c7602f71d0fec51e7c9c5
+  RxAlamofire: a2d7621de4c23a0c6e7b476b504acc32838ee341
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
+  RxCoreLocation: 0cde68bd64dd1af3e7beaaac8a693ef613fd3a05
   RxFlow: 605ef6364d7e937bea8f9507a1e99a431cdc2493
+  RxOptional: b1fcd60856807a564c0215c2184b8d33e7826dc2
+  RxRealm: 900f5c7e6f0a2d6527b56eaf7283f3035ec1e8ba
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
+  Swinject: ddf78b8486dd9b71a667b852cad919ab4484478e
   TextFieldCounter: 0f20630c8fe6f02b657bd883674829edfc40d845
 
-PODFILE CHECKSUM: e43cd804589b4f6dad4ca51e2821ffd6e05fe5e6
+PODFILE CHECKSUM: af5f30f982173be21ce2d0cc2e1eafe8599b2729
 
 COCOAPODS: 1.10.0

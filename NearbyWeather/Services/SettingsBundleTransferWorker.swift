@@ -8,34 +8,18 @@
 
 import Foundation
 
-final class SettingsBundleTransferService {
-  
-  static let shared = SettingsBundleTransferService()
-  
-  // MARK: - Types
+final class SettingsBundleTransferWorker {
   
   private struct SettingsBundleIdentifier {
     static let appVersion = "app_version_identifier"
     static let appBuild = "app_build_identifier"
   }
   
-  // MARK: - Assets
-  
-  private lazy var appVersion: String? = {
-    Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
-  }()
-  
-  private lazy var appBuild: String? = {
-    Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
-  }()
-  
-  // MARK: - Functions
-  
-  func updateSystemSettings() {
-    if let appVersion = appVersion {
+  static func updateSystemSettings() {
+    if let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
       UserDefaults.standard.set(appVersion, forKey: SettingsBundleIdentifier.appVersion)
     }
-    if let appBuild = appBuild {
+    if let appBuild = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String {
       UserDefaults.standard.set(appBuild, forKey: SettingsBundleIdentifier.appBuild)
     }
   }

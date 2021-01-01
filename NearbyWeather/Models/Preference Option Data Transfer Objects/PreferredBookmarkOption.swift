@@ -22,7 +22,7 @@ struct PreferredBookmarkOption: Codable, PreferencesOption {
   }
   
   var stringValue: String {
-    let bookmarkedLocation = WeatherDataService.shared.bookmarkedLocations.first(where: { $0.identifier == value })
+    let bookmarkedLocation = WeatherInformationService.shared.bookmarkedLocations.first(where: { $0.identifier == value })
     return bookmarkedLocation?.name ?? R.string.localizable.none()
   }
 }

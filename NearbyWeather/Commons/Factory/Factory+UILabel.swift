@@ -13,9 +13,10 @@ extension Factory {
   struct Label: FactoryFunction {
     
     enum LabelType {
-      case title(alignment: NSTextAlignment, numberOfLines: Int)
-      case body(alignment: NSTextAlignment, numberOfLines: Int)
-      case description(alignment: NSTextAlignment, numberOfLines: Int)
+      case title(alignment: NSTextAlignment = .left, numberOfLines: Int = 0)
+      case body(alignment: NSTextAlignment = .left, numberOfLines: Int = 0)
+      case description(alignment: NSTextAlignment = .left, numberOfLines: Int = 0)
+      case weatherSymbol
     }
     
     typealias InputType = LabelType
@@ -40,6 +41,10 @@ extension Factory {
         label.font = .preferredFont(forTextStyle: .subheadline)
         label.textAlignment = alignment
         label.numberOfLines = numberOfLines
+      case .weatherSymbol:
+        label.font = .systemFont(ofSize: 70)
+        label.textAlignment = .center
+        label.numberOfLines = 1
       }
       
       return label

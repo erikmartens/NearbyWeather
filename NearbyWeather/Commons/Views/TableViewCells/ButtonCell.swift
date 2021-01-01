@@ -10,9 +10,9 @@ import UIKit
 
 class ButtonCell: UITableViewCell, ReuseIdentifiable {
   
-  private lazy var contentLabel = Factory.Label.make(fromType: .body(alignment: .left, numberOfLines: 0))
-  private lazy var leftButton = Factory.Button.make(fromType: .standard(height: Constants.Dimensions.InteractableElement.height))
-  private lazy var rightButton = Factory.Button.make(fromType: .standard(height: Constants.Dimensions.InteractableElement.height))
+  private lazy var contentLabel = Factory.Label.make(fromType: .body())
+  private lazy var leftButton = Factory.Button.make(fromType: .standard(height: Constants.Dimensions.Size.InteractableElementSize.height))
+  private lazy var rightButton = Factory.Button.make(fromType: .standard(height: Constants.Dimensions.Size.InteractableElementSize.height))
   
   private var leftButtonHandler: ((UIButton) -> Void)?
   private var rightButtonHandler: ((UIButton) -> Void)?
@@ -72,25 +72,25 @@ private extension ButtonCell {
   
   func composeCell() {
     contentView.addSubview(contentLabel, constraints: [
-      contentLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.Dimensions.ContentElement.height),
+      contentLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.Dimensions.Size.ContentElementSize.height),
       contentLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-      contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Dimensions.TableCellContentInsets.leading),
-      contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Dimensions.TableCellContentInsets.trailing)
+      contentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Dimensions.Spacing.TableCellContentInsets.leading),
+      contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Dimensions.Spacing.TableCellContentInsets.trailing)
     ])
     
     contentView.addSubview(leftButton, constraints: [
-      leftButton.heightAnchor.constraint(equalToConstant: Constants.Dimensions.InteractableElement.height),
-      leftButton.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: Constants.Dimensions.TableCellContentInsets.interElementYDistance(from: .small)),
-      leftButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Dimensions.TableCellContentInsets.interElementYDistance(from: .medium)),
-      leftButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Dimensions.TableCellContentInsets.leading)
+      leftButton.heightAnchor.constraint(equalToConstant: Constants.Dimensions.Size.InteractableElementSize.height),
+      leftButton.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: Constants.Dimensions.Spacing.InterElementSpacing.yDistance(from: .small)),
+      leftButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Dimensions.Spacing.InterElementSpacing.xDistance(from: .medium)),
+      leftButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Dimensions.Spacing.TableCellContentInsets.leading)
     ])
     
     contentView.addSubview(rightButton, constraints: [
-      rightButton.heightAnchor.constraint(equalToConstant: Constants.Dimensions.InteractableElement.height),
-      rightButton.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: Constants.Dimensions.TableCellContentInsets.interElementYDistance(from: .small)),
-      rightButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Dimensions.TableCellContentInsets.interElementYDistance(from: .medium)),
-      rightButton.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: Constants.Dimensions.TableCellContentInsets.interElementXDistance(from: .large)),
-      rightButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Dimensions.TableCellContentInsets.trailing),
+      rightButton.heightAnchor.constraint(equalToConstant: Constants.Dimensions.Size.InteractableElementSize.height),
+      rightButton.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: Constants.Dimensions.Spacing.InterElementSpacing.yDistance(from: .small)),
+      rightButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Dimensions.Spacing.InterElementSpacing.yDistance(from: .medium)),
+      rightButton.leadingAnchor.constraint(equalTo: leftButton.trailingAnchor, constant: Constants.Dimensions.Spacing.InterElementSpacing.xDistance(from: .large)),
+      rightButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Dimensions.Spacing.TableCellContentInsets.trailing),
       rightButton.widthAnchor.constraint(equalTo: leftButton.widthAnchor, multiplier: 1)
     ])
   }

@@ -9,13 +9,13 @@
 import Foundation
 
 enum DistanceVelocityUnitValue: Int, CaseIterable, Codable {
-  case kilometres
-  case miles
+  case metric
+  case imperial
 }
 
-struct DistanceVelocityUnitOption: Codable, PreferencesOption {
-  static let availableOptions = [DistanceVelocityUnitOption(value: .kilometres),
-                                 DistanceVelocityUnitOption(value: .miles)]
+struct DimensionalUnitsOption: Codable, PreferencesOption {
+  static let availableOptions = [DimensionalUnitsOption(value: .metric),
+                                 DimensionalUnitsOption(value: .imperial)]
   
   typealias PreferencesOptionType = DistanceVelocityUnitValue
   
@@ -38,9 +38,9 @@ struct DistanceVelocityUnitOption: Codable, PreferencesOption {
   
   var stringValue: String {
     switch value {
-    case .kilometres:
+    case .metric:
       return R.string.localizable.metric()
-    case .miles:
+    case .imperial:
       return R.string.localizable.imperial()
     }
   }

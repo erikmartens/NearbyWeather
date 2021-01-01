@@ -42,7 +42,7 @@ final class WeatherStationService {
     
     openWeatherMapCityServiceBackgroundQueue.async {
       self.databaseQueue.inDatabase { database in
-        let usedLocationIdentifiers = WeatherDataService.shared.bookmarkedLocations.compactMap {
+        let usedLocationIdentifiers = WeatherInformationService.shared.bookmarkedLocations.compactMap {
           String($0.identifier)
         }
         

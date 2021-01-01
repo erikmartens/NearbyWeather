@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ErrorDataDTO: Codable {
+struct WeatherInformationErrorDTO: Codable {
   var errorType: ErrorType
   var httpStatusCode: Int?
   

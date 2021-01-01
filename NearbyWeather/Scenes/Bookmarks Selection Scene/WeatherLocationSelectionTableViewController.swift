@@ -95,7 +95,7 @@ final class WeatherLocationSelectionTableViewController: UITableViewController, 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     
-    WeatherDataService.shared.bookmarkedLocations.append(filteredCities[indexPath.row])
+    WeatherInformationService.shared.bookmarkedLocations.append(filteredCities[indexPath.row])
     HUD.flash(.success, delay: 1.0)
     navigationController?.popViewController(animated: true)
   }

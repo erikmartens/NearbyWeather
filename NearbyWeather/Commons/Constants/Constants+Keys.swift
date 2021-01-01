@@ -15,16 +15,21 @@ extension Constants {
 extension Constants.Keys {
   
   enum UserDefaults {
-    static let kNearbyWeatherApiKeyKey = "nearby_weather.openWeatherMapApiKey"
+    static let kMigratedToVersion230 =  "de.erikmaximilianmartens.nearbyWeather.migratedToVersion_2_3_0"
     static let kIsInitialLaunch = "nearby_weather.isInitialLaunch"
+    
+    static let kNearbyWeatherApiKeyKey = "nearby_weather.openWeatherMapApiKey"
+    
     static let kRefreshOnAppStartKey = "de.erikmaximilianmartens.nearbyWeather.refreshOnAppStart"
-    static let kWeatherDataLastRefreshDateKey = "de.erikmaximilianmartens.nearbyWeather.weatherDataService.lastUpdateDate"
     static let kIsTemperatureOnAppIconEnabledKey = "de.erikmaximilianmartens.nearbyWeather.isTemperatureOnAppIconEnabled"
+    
+    static let kWeatherDataLastRefreshDateKey = "de.erikmaximilianmartens.nearbyWeather.weatherDataService.lastUpdateDate"
   }
 }
 
 extension Constants.Keys {
   
+  // TODO: remove no longer used keys
   enum NotificationCenter {
     static let kWeatherServiceDidUpdate = "de.erikmaximilianmartens.nearbyWeather.weatherServiceDidUpdate"
     static let kLocationAuthorizationUpdated = "de.erikmaximilianmartens.nearbyWeather.locationAuthorizationUpdated"

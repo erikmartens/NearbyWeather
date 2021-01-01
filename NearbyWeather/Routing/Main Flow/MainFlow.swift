@@ -9,13 +9,13 @@
 import RxFlow
 
 final class MainFlow: Flow {
-  
+
   // MARK: - Assets
-  
+
   var root: Presentable {
     rootViewController
   }
-  
+
   private lazy var rootViewController: UITabBarController = {
     let tabbar = UITabBarController()
     tabbar.tabBar.backgroundColor = Constants.Theme.Color.ViewElement.background
@@ -23,11 +23,11 @@ final class MainFlow: Flow {
     tabbar.tabBar.tintColor = Constants.Theme.Color.MarqueColors.standardDay
     return tabbar
   }()
-  
+
   // MARK: - Initialization
-  
+
   init() {}
-  
+
   deinit {
     printDebugMessage(
       domain: String(describing: self),
@@ -35,9 +35,9 @@ final class MainFlow: Flow {
       type: .info
     )
   }
-  
+
   // MARK: - Functions
-  
+
   func navigate(to step: Step) -> FlowContributors {
     guard let step = step as? MainStep else {
       return .none
@@ -50,13 +50,13 @@ final class MainFlow: Flow {
 }
 
 private extension MainFlow {
-  
+
   func summonRootTabBar() -> FlowContributors {
-    
+
     let listFlow = ListFlow()
     let mapFlow = MapFlow()
     let settingsFlow = SettingsFlow()
-    
+
     Flows.whenReady(
       flow1: listFlow,
       flow2: mapFlow,
@@ -68,7 +68,7 @@ private extension MainFlow {
         settingsRoot
       ]
     }
-    
+
     return .multiple(flowContributors: [
       .contribute(withNextPresentable: listFlow, withNextStepper: ListStepper()),
       .contribute(withNextPresentable: mapFlow, withNextStepper: MapStepper()),

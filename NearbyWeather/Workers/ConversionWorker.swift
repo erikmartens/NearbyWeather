@@ -12,7 +12,7 @@ import APTimeZones
 
 final class ConversionWorker {
   
-  static func weatherConditionSymbol(fromWeatherCode code: Int?, isDayTime: Bool) -> String {
+  static func weatherConditionSymbol(fromWeatherCode code: Int?, isDayTime: Bool?) -> String {
     guard let code = code else {
       return "❓"
     }
@@ -36,7 +36,7 @@ final class ConversionWorker {
     case let x where x == 781 || x == 900:
       return "🌪"
     case let x where x == 800:
-      return isDayTime ? "☀️" : "🌕"
+      return (isDayTime ?? false) ? "☀️" : "🌕"
     case let x where x == 801:
       return "🌤"
     case let x where x == 802:
@@ -77,7 +77,10 @@ final class ConversionWorker {
     return Int(adjustedTemp.rounded())
   }
   
-  static func temperatureDescriptor(forTemperatureUnit temperatureUnit: TemperatureUnitOption, fromRawTemperature rawTemperature: Double) -> String {
+  static func temperatureDescriptor(forTemperatureUnit temperatureUnit: TemperatureUnitOption, fromRawTemperature rawTemperature: Double?) -> String? {
+    guard let rawTemperature = rawTemperature else {
+      return nil
+    }
     switch temperatureUnit.value {
     case .celsius:
       return String(format: "%.02f", rawTemperature - 273.15).append(contentsOf: "°C", delimiter: .none)
@@ -88,20 +91,23 @@ final class ConversionWorker {
     }
   }
   
-  static func windspeedDescriptor(forDistanceSpeedUnit distanceSpeedUnit: DistanceVelocityUnitOption, forWindspeed windspeed: Double) -> String {
+  static func windspeedDescriptor(forDistanceSpeedUnit distanceSpeedUnit: DimensionalUnitsOption, forWindspeed windspeed: Double?) -> String? {
+    guard let windspeed = windspeed else {
+      return nil
+    }
     switch distanceSpeedUnit.value {
-    case .kilometres:
+    case .metric:
       return String(format: "%.02f", windspeed).append(contentsOf: R.string.localizable.kph(), delimiter: .space)
-    case .miles:
+    case .imperial:
       return String(format: "%.02f", windspeed / 1.609344).append(contentsOf: R.string.localizable.mph(), delimiter: .space)
     }
   }
   
-  static func distanceDescriptor(forDistanceSpeedUnit distanceSpeedUnit: DistanceVelocityUnitOption, forDistanceInMetres distance: Double) -> String {
+  static func distanceDescriptor(forDistanceSpeedUnit distanceSpeedUnit: DimensionalUnitsOption, forDistanceInMetres distance: Double) -> String {
     switch distanceSpeedUnit.value {
-    case .kilometres:
+    case .metric:
       return String(format: "%.02f", distance/1000).append(contentsOf: R.string.localizable.km(), delimiter: .space)
-    case .miles:
+    case .imperial:
       return String(format: "%.02f", distance/1609.344).append(contentsOf: R.string.localizable.mi(), delimiter: .space)
     }
   }

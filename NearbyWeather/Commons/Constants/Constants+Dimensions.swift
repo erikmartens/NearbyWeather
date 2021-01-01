@@ -19,17 +19,17 @@ extension Constants {
 }
 
 extension Constants.Dimensions {
-  
+
   enum ContentElement {
     /// constant: 34
     static let height: CGFloat = 34
   }
-  
+
   enum InteractableElement {
     /// constant: 34
     static let height: CGFloat = 34
   }
-  
+
   enum AppIconImageSize {
     /// constant: 75
     static let width: CGFloat = 75
@@ -38,7 +38,7 @@ extension Constants.Dimensions {
     /// constant: 4
     static let cornerRadius: CGFloat = 13
   }
-  
+
   enum TableCellImageSize {
     /// constant: 28
     static let width: CGFloat = 28
@@ -47,7 +47,7 @@ extension Constants.Dimensions {
     /// constant: 4
     static let cornerRadius: CGFloat = 4
   }
-  
+
   enum TableCellContentInsets {
     /// constant: 16
     static let leading: CGFloat = 16

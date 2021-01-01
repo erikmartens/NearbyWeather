@@ -65,7 +65,7 @@ private extension WeatherDetailFlow {
   
   func summonWeatherDetailController(weatherDataIdentifier: Int?, isBookmark: Bool) -> FlowContributors {
     guard let weatherDataIdentifier = weatherDataIdentifier,
-      let weatherDTO = WeatherDataService.shared.weatherDTO(forIdentifier: weatherDataIdentifier) else {
+      let weatherDTO = WeatherInformationService.shared.weatherDTO(forIdentifier: weatherDataIdentifier) else {
         return .none
     }
     let weatherDetailViewController = WeatherDetailViewController.instantiateFromStoryBoard(

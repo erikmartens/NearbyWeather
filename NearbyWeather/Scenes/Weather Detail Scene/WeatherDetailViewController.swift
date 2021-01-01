@@ -25,25 +25,25 @@ extension WeatherDetailViewController {
 final class WeatherDetailViewController: UIViewController, Stepper {
 
   // MARK: - Routing
-  
+
   var steps = PublishRelay<Step>()
-  
+
   // MARK: - Properties
-  
+
   /* Injected */
-  
+
   private var titleString: String!
   private var weatherDTO: WeatherInformationDTO!
   private var isBookmark: Bool!
-  
+
   /* Outlets */
-  
+
   @IBOutlet weak var conditionSymbolLabel: UILabel!
   @IBOutlet weak var conditionNameLabel: UILabel!
   @IBOutlet weak var conditionDescriptionLabel: UILabel!
   @IBOutlet weak var temperatureLabel: UILabel!
   @IBOutlet weak var timeLabel: UILabel!
-  
+
   @IBOutlet weak var daytimeStackView: UIStackView!
   @IBOutlet weak var sunriseImageView: UIImageView!
   @IBOutlet weak var sunriseNoteLabel: UILabel!
@@ -51,7 +51,7 @@ final class WeatherDetailViewController: UIViewController, Stepper {
   @IBOutlet weak var sunsetImageView: UIImageView!
   @IBOutlet weak var sunsetNoteLabel: UILabel!
   @IBOutlet weak var sunsetLabel: UILabel!
-  
+
   @IBOutlet weak var cloudCoverImageView: UIImageView!
   @IBOutlet weak var cloudCoverNoteLabel: UILabel!
   @IBOutlet weak var cloudCoverLabel: UILabel!
@@ -61,7 +61,7 @@ final class WeatherDetailViewController: UIViewController, Stepper {
   @IBOutlet weak var pressureImageView: UIImageView!
   @IBOutlet weak var pressureNoteLabel: UILabel!
   @IBOutlet weak var pressureLabel: UILabel!
-  
+
   @IBOutlet weak var windSpeedStackView: UIStackView!
   @IBOutlet weak var windSpeedImageView: UIImageView!
   @IBOutlet weak var windSpeedNoteLabel: UILabel!
@@ -70,7 +70,7 @@ final class WeatherDetailViewController: UIViewController, Stepper {
   @IBOutlet weak var windDirectionImageView: UIImageView!
   @IBOutlet weak var windDirectionNoteLabel: UILabel!
   @IBOutlet weak var windDirectionLabel: UILabel!
-  
+
   @IBOutlet weak var locationStackView: UIStackView!
   @IBOutlet weak var mapView: MKMapView!
   @IBOutlet weak var coordinatesImageView: UIImageView!
@@ -80,39 +80,39 @@ final class WeatherDetailViewController: UIViewController, Stepper {
   @IBOutlet weak var distanceImageView: UIImageView!
   @IBOutlet weak var distanceNoteLabel: UILabel!
   @IBOutlet weak var distanceLabel: UILabel!
-  
+
   @IBOutlet var separatorLineHeightConstraints: [NSLayoutConstraint]!
-  
+
   // MARK: - ViewController Lifecycle
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     title = titleString
-    
+
     navigationItem.leftBarButtonItem = UIBarButtonItem(
       image: R.image.verticalCloseButton(),
       style: .plain,
       target: self,
       action: #selector(Self.dismissButtonTapped))
-    
+
     mapView.delegate = self
     mapView.mapType = PreferencesDataService.shared.preferredMapType
-    
+
     configureMap()
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    
+
     configure()
   }
-  
+
   // MARK: - Private Helpers
-  
+
   private func configure() {
-    
+
     let isDayTime = ConversionWorker.isDayTime(for: weatherDTO.daytimeInformation, coordinates: weatherDTO.coordinates) ?? true
-    
+
     var navigationBarTintColor: UIColor
     var navigationTintColor: UIColor
     if isBookmark {
@@ -122,50 +122,50 @@ final class WeatherDetailViewController: UIViewController, Stepper {
       navigationBarTintColor = .white
       navigationTintColor = .black
     }
-    
+
     navigationController?.navigationBar.style(withBarTintColor: navigationBarTintColor, tintColor: navigationTintColor)
-    
+
     separatorLineHeightConstraints.forEach { $0.constant = 1/UIScreen.main.scale }
-    
+
     conditionSymbolLabel.text = ConversionWorker.weatherConditionSymbol(
       fromWeatherCode: weatherDTO.weatherCondition[0].identifier,
       isDayTime: isDayTime
     )
     conditionNameLabel.text = weatherDTO.weatherCondition.first?.conditionName
     conditionDescriptionLabel.text = weatherDTO.weatherCondition.first?.conditionDescription?.capitalized
-    
+
     if let temperatureKelvin = weatherDTO.atmosphericInformation.temperatureKelvin {
       let temperatureUnit = PreferencesDataService.shared.temperatureUnit
       temperatureLabel.text = ConversionWorker.temperatureDescriptor(forTemperatureUnit: temperatureUnit, fromRawTemperature: temperatureKelvin)
     } else {
       temperatureLabel.text = nil
     }
-    
+
     if let sunriseTimeSinceReferenceDate = weatherDTO.daytimeInformation.sunrise,
       let sunsetTimeSinceReferenceDate = weatherDTO.daytimeInformation.sunset,
       let latitude = weatherDTO.coordinates.latitude,
       let longitude = weatherDTO.coordinates.longitude {
       let sunriseDate = Date(timeIntervalSince1970: sunriseTimeSinceReferenceDate)
       let sunsetDate = Date(timeIntervalSince1970: sunsetTimeSinceReferenceDate)
-      
+
       let location = CLLocation(latitude: latitude, longitude: longitude)
-      
+
       let dateFormatter = DateFormatter()
       dateFormatter.calendar = .current
       dateFormatter.timeZone = location.timeZone()
       dateFormatter.dateStyle = .none
       dateFormatter.timeStyle = .short
-      
+
       let description = isDayTime ? R.string.localizable.dayTime() : R.string.localizable.nightTime()
       let localTime = dateFormatter.string(from: Date())
       timeLabel.text = ""
         .append(contentsOf: description, delimiter: .none)
         .append(contentsOf: localTime, delimiter: .space)
-      
+
       sunriseImageView.tintColor = .darkGray
       sunriseNoteLabel.text = R.string.localizable.sunrise()
       sunriseLabel.text = dateFormatter.string(from: sunriseDate)
-      
+
       sunsetImageView.tintColor = .darkGray
       sunsetNoteLabel.text = R.string.localizable.sunset()
       sunsetLabel.text = dateFormatter.string(from: sunsetDate)
@@ -173,7 +173,7 @@ final class WeatherDetailViewController: UIViewController, Stepper {
       daytimeStackView.isHidden = true
       timeLabel.isHidden = true
     }
-    
+
     cloudCoverImageView.tintColor = .darkGray
     cloudCoverNoteLabel.text = R.string.localizable.cloud_coverage()
     cloudCoverLabel.text = weatherDTO.cloudCoverage.coverage?.append(contentsOf: "%", delimiter: .none)
@@ -183,10 +183,10 @@ final class WeatherDetailViewController: UIViewController, Stepper {
     pressureImageView.tintColor = .darkGray
     pressureNoteLabel.text = R.string.localizable.air_pressure()
     pressureLabel.text = weatherDTO.atmosphericInformation.pressurePsi?.append(contentsOf: "hpa", delimiter: .space)
-    
+
     windSpeedImageView.tintColor = .darkGray
     windSpeedNoteLabel.text = R.string.localizable.windspeed()
-    
+
     if let windspeed = weatherDTO.windInformation.windspeed {
       windSpeedLabel.text = ConversionWorker.windspeedDescriptor(
         forDistanceSpeedUnit: PreferencesDataService.shared.distanceSpeedUnit,
@@ -195,7 +195,7 @@ final class WeatherDetailViewController: UIViewController, Stepper {
     } else {
       windSpeedStackView.isHidden = true
     }
-    
+
     if let windDirection = weatherDTO.windInformation.degrees {
       windDirectionImageView.transform = CGAffineTransform(rotationAngle: CGFloat(windDirection)*0.0174532925199) // convert to radians
       windDirectionImageView.tintColor = .darkGray
@@ -205,14 +205,14 @@ final class WeatherDetailViewController: UIViewController, Stepper {
       windDirectionStackView.isHidden = true
     }
   }
-  
+
   private func configureMap() {
     guard let weatherLatitude = weatherDTO.coordinates.latitude,
       let weatherLongitude = weatherDTO.coordinates.longitude else {
         locationStackView.isHidden = true
         return
     }
-    
+
     // mapView
     if let mapAnnotation = WeatherLocationMapAnnotation(weatherDTO: weatherDTO, isBookmark: isBookmark) {
       mapView.layer.cornerRadius = 10
@@ -223,14 +223,14 @@ final class WeatherDetailViewController: UIViewController, Stepper {
     } else {
       mapView.isHidden = true
     }
-    
+
     // coordinates
     coordinatesImageView.tintColor = .darkGray
     coordinatesNoteLabel.text = R.string.localizable.coordinates()
     coordinatesLabel.text = ""
       .append(contentsOfConvertible: weatherDTO.coordinates.latitude, delimiter: .none)
       .append(contentsOfConvertible: weatherDTO.coordinates.longitude, delimiter: .comma)
-    
+
     // distance
     if UserLocationService.shared.locationPermissionsGranted,
       let userLocation = UserLocationService.shared.location,
@@ -238,10 +238,10 @@ final class WeatherDetailViewController: UIViewController, Stepper {
       let weatherLongitude = weatherDTO.coordinates.longitude {
       let location = CLLocation(latitude: weatherLatitude, longitude: weatherLongitude)
       let distanceInMetres = location.distance(from: userLocation)
-      
+
       let distanceSpeedUnit = PreferencesDataService.shared.distanceSpeedUnit
       let distanceString = ConversionWorker.distanceDescriptor(forDistanceSpeedUnit: distanceSpeedUnit, forDistanceInMetres: distanceInMetres)
-      
+
       distanceImageView.tintColor = .darkGray
       distanceNoteLabel.text = R.string.localizable.distance()
       distanceLabel.text = distanceString
@@ -249,48 +249,48 @@ final class WeatherDetailViewController: UIViewController, Stepper {
       distanceStackView.isHidden = true
     }
   }
-  
+
   // MARK: - IBActions
-  
+
   @IBAction func openWeatherMapButtonPressed(_ sender: UIButton) {
     presentSafariViewController(for:
       Constants.Urls.kOpenWeatherMapCityDetailsUrl(forCityWithName: weatherDTO.cityName)
     )
   }
-  
+
   @objc private func dismissButtonTapped(_ sender: UIBarButtonItem) {
     steps.accept(WeatherDetailStep.dismiss)
   }
 }
 
 extension WeatherDetailViewController: MKMapViewDelegate {
-  
+
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
     guard let annotation = annotation as? WeatherLocationMapAnnotation else {
       return nil
     }
-    
+
     var viewForCurrentAnnotation: WeatherLocationMapAnnotationView?
     if let dequeuedAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: Constants.Keys.MapAnnotation.kMapAnnotationViewIdentifier) as? WeatherLocationMapAnnotationView {
       viewForCurrentAnnotation = dequeuedAnnotationView
     } else {
       viewForCurrentAnnotation = WeatherLocationMapAnnotationView(frame: kMapAnnotationViewInitialFrame)
     }
-    
+
     var fillColor: UIColor
     var textColor: UIColor
-    
+
     if annotation.isBookmark {
       fillColor = annotation.isDayTime ?? true
         ? Constants.Theme.Color.MarqueColors.standardDay
         : Constants.Theme.Color.MarqueColors.standardNight // default to blue colored cells
-      
+
       textColor = .white
     } else {
       fillColor = .white
       textColor = .black
     }
-    
+
     viewForCurrentAnnotation?.annotation = annotation
     viewForCurrentAnnotation?.configure(
       withTitle: annotation.title ?? Constants.Messages.kNotSet,

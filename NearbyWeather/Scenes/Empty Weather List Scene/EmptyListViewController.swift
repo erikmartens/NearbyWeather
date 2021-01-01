@@ -9,24 +9,24 @@
 import UIKit
 
 final class EmptyListViewController: UIViewController {
-  
+
   // MARK: - IBOutlets
-  
+
   @IBOutlet weak var emptyListImageView: UIImageView!
   @IBOutlet weak var emptyListTitleLabel: UILabel!
   @IBOutlet weak var emptyListDescriptionLabel: UILabel!
-  
+
   @IBOutlet weak var reloadButton: UIButton!
-  
+
   // MARK: - ViewController Lifecycle
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     title = R.string.localizable.tab_weatherList()
-    
+
     configureWeatherDataUnavailableElements()
     configureButtons()
-    
+
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(Self.reconfigureOnNetworkDidBecomeAvailable),
@@ -34,25 +34,25 @@ final class EmptyListViewController: UIViewController {
       object: nil
     )
   }
-  
+
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
-  
+
   // MARK: - IBActions
-  
+
   @IBAction func didTapReloadButton(_ sender: UIButton) {
-    WeatherDataService.shared.update(withCompletionHandler: nil)
+    WeatherInformationService.shared.update(withCompletionHandler: nil)
   }
-  
+
   // MARK: - Functions
-  
+
   @objc private func reconfigureOnNetworkDidBecomeAvailable() {
     UIView.animate(withDuration: 0.5) {
       self.reloadButton.isHidden = WeatherNetworkingService.shared.reachabilityStatus != .connected
     }
   }
-  
+
   private func configureWeatherDataUnavailableElements() {
     emptyListImageView.tintColor = .lightGray
     emptyListTitleLabel.text = R.string.localizable.no_weather_data()
@@ -61,7 +61,7 @@ final class EmptyListViewController: UIViewController {
   
   private func configureButtons() {
     reloadButton.isHidden = WeatherNetworkingService.shared.reachabilityStatus != .connected
-    
+
     reloadButton.setTitle(R.string.localizable.reload().uppercased(), for: .normal)
     reloadButton.setTitleColor(.white, for: UIControl.State())
     reloadButton.titleLabel?.font = .preferredFont(forTextStyle: .headline)

@@ -6,40 +6,16 @@
 //  Copyright © 2016 Erik Maximilian Martens. All rights reserved.
 //
 
-import Foundation
+import RxSwift
 import MapKit
 import Alamofire
-
-/// This value type represents single location data.
-/// Each WeatherInformationDTO is fetched indvidually and therefore needs its own
-/// associated ErrorDataDTO. This is because each download may fail on it's own
-/// while other information may still be representable.
-struct WeatherDataContainer: Codable {
-  var locationId: Int
-  var errorDataDTO: ErrorDataDTO?
-  var weatherInformationDTO: WeatherInformationDTO?
-}
-
-/// This value type represents bulk location data.
-/// It contains multiple WeatherInformationDTOs but only one associated ErrorDataDTO
-/// This is because the fetch either succeeds as a whole or not at all.
-struct BulkWeatherDataContainer: Codable {
-  var errorDataDTO: ErrorDataDTO?
-  var weatherInformationDTOs: [WeatherInformationDTO]?
-}
-
-struct WeatherDataManagerStoredContentsWrapper: Codable {
-  var bookmarkedLocations: [WeatherStationDTO]
-  var bookmarkedWeatherDataObjects: [WeatherDataContainer]?
-  var nearbyWeatherDataObject: BulkWeatherDataContainer?
-}
 
 enum UpdateStatus {
   case success
   case failure
 }
 
-final class WeatherDataService {
+final class WeatherInformationService {
   
   private lazy var fetchWeatherDataBackgroundQueue: DispatchQueue = {
     DispatchQueue(label: Constants.Labels.DispatchQueues.kFetchWeatherDataBackgroundQueue,
@@ -58,7 +34,7 @@ final class WeatherDataService {
   
   // MARK: - Public Assets
   
-  static var shared: WeatherDataService!
+  static var shared: WeatherInformationService!
   
   var hasDisplayableData: Bool {
     
@@ -84,12 +60,12 @@ final class WeatherDataService {
     didSet {
       update(withCompletionHandler: nil)
       sortBookmarkedLocationWeatherData()
-      WeatherDataService.storeData()
+      WeatherInformationService.storeData()
     }
   }
   var preferredBookmarkData: WeatherInformationDTO? {
     let preferredBookmarkId = PreferencesDataService.shared.preferredBookmark.value
-    return WeatherDataService.shared.bookmarkedWeatherDataObjects?.first(where: { $0.locationId == preferredBookmarkId })?.weatherInformationDTO
+    return WeatherInformationService.shared.bookmarkedWeatherDataObjects?.first(where: { $0.locationId == preferredBookmarkId })?.weatherInformationDTO
   }
   private(set) var bookmarkedWeatherDataObjects: [WeatherDataContainer]?
   private(set) var nearbyWeatherDataObject: BulkWeatherDataContainer?
@@ -122,7 +98,7 @@ final class WeatherDataService {
   // MARK: - Public Properties & Methods
   
   static func instantiateSharedInstance() {
-    shared = WeatherDataService.loadData() ?? WeatherDataService(bookmarkedLocations: [Constants.Mocks.WeatherStationDTOs.kDefaultBookmarkedLocation])
+    shared = WeatherInformationService.loadData() ?? WeatherInformationService(bookmarkedLocations: [Constants.Mocks.WeatherStationDTOs.kDefaultBookmarkedLocation])
   }
   
   func update(withCompletionHandler completionHandler: ((UpdateStatus) -> Void)?) {
@@ -176,7 +152,7 @@ final class WeatherDataService {
         self.sortNearbyLocationWeatherData()
       }
       
-      WeatherDataService.storeData()
+      WeatherInformationService.storeData()
       DispatchQueue.main.async {
         UserDefaults.standard.set(Date(), forKey: Constants.Keys.UserDefaults.kWeatherDataLastRefreshDateKey)
         NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.Keys.NotificationCenter.kWeatherServiceDidUpdate), object: self)
@@ -221,7 +197,7 @@ final class WeatherDataService {
       }
       self.sortBookmarkedLocationWeatherData()
       
-      WeatherDataService.storeData()
+      WeatherInformationService.storeData()
       DispatchQueue.main.async {
         NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.Keys.NotificationCenter.kWeatherServiceDidUpdate), object: nil)
         BadgeService.shared.updateBadge()
@@ -303,18 +279,18 @@ final class WeatherDataService {
   @objc private func discardLocationBasedWeatherDataIfNeeded() {
     if !UserLocationService.shared.locationPermissionsGranted {
       nearbyWeatherDataObject = nil
-      WeatherDataService.storeData()
+      WeatherInformationService.storeData()
       NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.Keys.NotificationCenter.kWeatherServiceDidUpdate), object: nil)
     }
   }
 }
 
-extension WeatherDataService: DataStorageProtocol {
+extension WeatherInformationService: JsonPersistencyProtocol {
   
-  typealias StorageEntity = WeatherDataService
+  typealias StorageEntity = WeatherInformationService
   
-  static func loadData() -> WeatherDataService? {
-    guard let weatherDataManagerStoredContents = DataStorageWorker.retrieveJsonFromFile(
+  static func loadData() -> WeatherInformationService? {
+    guard let weatherDataManagerStoredContents = try? JsonPersistencyWorker().retrieveJsonFromFile(
       with: Constants.Keys.Storage.kWeatherDataManagerStoredContentsFileName,
       andDecodeAsType: WeatherDataManagerStoredContentsWrapper.self,
       fromStorageLocation: .documents
@@ -322,7 +298,7 @@ extension WeatherDataService: DataStorageProtocol {
         return nil
     }
     
-    let weatherService = WeatherDataService(bookmarkedLocations: weatherDataManagerStoredContents.bookmarkedLocations)
+    let weatherService = WeatherInformationService(bookmarkedLocations: weatherDataManagerStoredContents.bookmarkedLocations)
     weatherService.bookmarkedWeatherDataObjects = weatherDataManagerStoredContents.bookmarkedWeatherDataObjects
     weatherService.nearbyWeatherDataObject = weatherDataManagerStoredContents.nearbyWeatherDataObject
     
@@ -335,13 +311,15 @@ extension WeatherDataService: DataStorageProtocol {
     dispatchSemaphore.wait()
     weatherServiceBackgroundQueue.async {
       let weatherDataManagerStoredContents = WeatherDataManagerStoredContentsWrapper(
-        bookmarkedLocations: WeatherDataService.shared.bookmarkedLocations,
-        bookmarkedWeatherDataObjects: WeatherDataService.shared.bookmarkedWeatherDataObjects,
-        nearbyWeatherDataObject: WeatherDataService.shared.nearbyWeatherDataObject
+        bookmarkedLocations: WeatherInformationService.shared.bookmarkedLocations,
+        bookmarkedWeatherDataObjects: WeatherInformationService.shared.bookmarkedWeatherDataObjects,
+        nearbyWeatherDataObject: WeatherInformationService.shared.nearbyWeatherDataObject
       )
-      DataStorageWorker.storeJson(for: weatherDataManagerStoredContents,
-                                   inFileWithName: Constants.Keys.Storage.kWeatherDataManagerStoredContentsFileName,
-                                   toStorageLocation: .documents)
+      try? JsonPersistencyWorker().storeJson(
+        for: weatherDataManagerStoredContents,
+        inFileWithName: Constants.Keys.Storage.kWeatherDataManagerStoredContentsFileName,
+        toStorageLocation: .documents
+      )
       dispatchSemaphore.signal()
     }
   }

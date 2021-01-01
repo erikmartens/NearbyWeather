@@ -7,6 +7,7 @@
 //
 
 import RxFlow
+import Swinject
 
 class RootFlow: Flow {
   
@@ -19,11 +20,16 @@ class RootFlow: Flow {
   // MARK: - Properties
   
   let rootWindow: UIWindow
+  let dependencyContainer: Container
   
   // MARK: - Initialization
   
-  init(rootWindow: UIWindow) {
+  init(
+    rootWindow: UIWindow,
+    dependencyContainer: Container
+  ) {
     self.rootWindow = rootWindow
+    self.dependencyContainer = dependencyContainer
   }
   
   // MARK: - Functions

@@ -14,14 +14,14 @@ extension Factory {
   struct AlertController: FactoryFunction {
     
     enum AlertControllerType {
-      case weatherListType(currentListType: ListType, completionHandler: ((ListType) -> Void))
+      case weatherListType(currentListType: ListTypeValue, completionHandler: ((ListTypeValue) -> Void))
       case weatherMapType(currentMapType: MKMapType, completionHandler: ((MKMapType) -> Void))
       case focusMapOnLocation(bookmarks: [WeatherInformationDTO], completionHandler: ((WeatherInformationDTO?) -> Void))
       case preferredBookmarkOptions(options: [PreferredBookmarkOption], completionHandler: ((Bool) -> Void))
       case preferredAmountOfResultsOptions(options: [AmountOfResultsOption], completionHandler: ((Bool) -> Void))
       case preferredSortingOrientationOptions(options: [SortingOrientationOption], completionHandler: ((Bool) -> Void))
       case preferredTemperatureUnitOptions(options: [TemperatureUnitOption], completionHandler: ((Bool) -> Void))
-      case preferredSpeedUnitOptions(options: [DistanceVelocityUnitOption], completionHandler: ((Bool) -> Void))
+      case preferredSpeedUnitOptions(options: [DimensionalUnitsOption], completionHandler: ((Bool) -> Void))
       case pushNotificationsDisabled
       case dimissableNotice(title: String?, message: String?)
     }
@@ -85,8 +85,8 @@ extension Factory {
 
 private extension Factory.AlertController {
   
-  static func weatherListTypeAlert(currentListType: ListType, completionHandler: @escaping ((ListType) -> Void)) -> UIAlertController {
-    let actions = ListType.allCases.map { listType -> UIAlertAction in
+  static func weatherListTypeAlert(currentListType: ListTypeValue, completionHandler: @escaping ((ListTypeValue) -> Void)) -> UIAlertController {
+    let actions = ListTypeValue.allCases.map { listType -> UIAlertAction in
       let action = UIAlertAction(title: listType.title, style: .default, handler: { _ in
         completionHandler(listType)
       })
@@ -222,7 +222,7 @@ private extension Factory.AlertController {
     )
   }
   
-  static func preferredSpeedUnitOptionsAlert(options: [DistanceVelocityUnitOption], completionHandler: @escaping ((Bool) -> Void)) -> UIAlertController {
+  static func preferredSpeedUnitOptionsAlert(options: [DimensionalUnitsOption], completionHandler: @escaping ((Bool) -> Void)) -> UIAlertController {
     let actions = options.map { option -> UIAlertAction in
       let actionIsSelected = PreferencesDataService.shared.distanceSpeedUnit.value == option.value
       

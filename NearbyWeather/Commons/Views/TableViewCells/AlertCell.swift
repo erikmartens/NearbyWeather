@@ -37,7 +37,7 @@ class AlertCell: UITableViewCell {
     startAnimationTimer()
   }
   
-  func configureWithErrorDataDTO(_ errorDataDTO: ErrorDataDTO?) {
+  func configureWithErrorDataDTO(_ errorDataDTO: WeatherInformationErrorDTO?) {
     guard let errorDataDTO = errorDataDTO else {
       configure(with: R.string.localizable.unknown_error())
       return

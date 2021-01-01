@@ -10,7 +10,7 @@ import UIKit
 
 class ImagedSingleLabelCell: UITableViewCell, ReuseIdentifiable {
   
-  private lazy var contentLabel = Factory.Label.make(fromType: .body(alignment: .left, numberOfLines: 0))
+  private lazy var contentLabel = Factory.Label.make(fromType: .body())
   private lazy var leadingImageView = Factory.ImageView.make(fromType: .cellPrefix)
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -40,20 +40,20 @@ private extension ImagedSingleLabelCell {
   
   func composeCell() {
     contentView.addSubview(leadingImageView, constraints: [
-      leadingImageView.heightAnchor.constraint(equalToConstant: Constants.Dimensions.TableCellImageSize.height),
-      leadingImageView.widthAnchor.constraint(equalToConstant: Constants.Dimensions.TableCellImageSize.width),
-      leadingImageView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constants.Dimensions.TableCellContentInsets.top),
-      leadingImageView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constants.Dimensions.TableCellContentInsets.bottom),
-      leadingImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Dimensions.TableCellContentInsets.leading),
+      leadingImageView.heightAnchor.constraint(equalToConstant: Constants.Dimensions.Size.TableCellImageSize.height),
+      leadingImageView.widthAnchor.constraint(equalToConstant: Constants.Dimensions.Size.TableCellImageSize.width),
+      leadingImageView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor, constant: Constants.Dimensions.Spacing.TableCellContentInsets.top),
+      leadingImageView.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constants.Dimensions.Spacing.TableCellContentInsets.bottom),
+      leadingImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.Dimensions.Spacing.TableCellContentInsets.leading),
       leadingImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
     ])
     
     contentView.addSubview(contentLabel, constraints: [
-      contentLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.Dimensions.ContentElement.height),
-      contentLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.Dimensions.TableCellContentInsets.top),
-      contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Dimensions.TableCellContentInsets.bottom),
-      contentLabel.leadingAnchor.constraint(equalTo: leadingImageView.trailingAnchor, constant: Constants.Dimensions.TableCellContentInsets.interElementXDistance(from: .small)),
-      contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Dimensions.TableCellContentInsets.trailing),
+      contentLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.Dimensions.Size.ContentElementSize.height),
+      contentLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.Dimensions.Spacing.TableCellContentInsets.top),
+      contentLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.Dimensions.Spacing.TableCellContentInsets.bottom),
+      contentLabel.leadingAnchor.constraint(equalTo: leadingImageView.trailingAnchor, constant: Constants.Dimensions.Spacing.InterElementSpacing.xDistance(from: .small)),
+      contentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.Dimensions.Spacing.TableCellContentInsets.trailing),
       contentLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
     ])
   }

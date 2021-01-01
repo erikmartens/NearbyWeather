@@ -13,29 +13,34 @@ import MessageUI
 
 final class AboutAppTableViewController: UITableViewController, Stepper {
   
-  private lazy var thirdPartyLibraries: [ThirdPartyLibraryDTO] = {
-    DataStorageWorker.retrieveJsonFromFile(with: R.file.thirdPartyLibrariesJson.name,
-                                                   andDecodeAsType: ThirdPartyLibraryArrayWrapper.self,
-                                                   fromStorageLocation: .bundle)?
+  private lazy var thirdPartyLibraries: [ThirdPartyLibraryDTO]? = {
+    try? JsonPersistencyWorker().retrieveJsonFromFile(
+      with: R.file.thirdPartyLibrariesJson.name,
+      andDecodeAsType: ThirdPartyLibraryArrayWrapper.self,
+      fromStorageLocation: .bundle
+      )
       .elements
-      .sorted { $0.name.lowercased() < $1.name.lowercased() } ?? [ThirdPartyLibraryDTO]()
-    
+      .sorted { $0.name.lowercased() < $1.name.lowercased() }
   }()
   
-  private lazy var owner: [DevelopmentContributorDTO] = {
-    DataStorageWorker.retrieveJsonFromFile(with: R.file.projectOwnerJson.name,
-                                                   andDecodeAsType: DevelopmentContributorArrayWrapper.self,
-                                                   fromStorageLocation: .bundle)?
+  private lazy var owner: [DevelopmentContributorDTO]? = {
+    try? JsonPersistencyWorker().retrieveJsonFromFile(
+      with: R.file.projectOwnerJson.name,
+      andDecodeAsType: DevelopmentContributorArrayWrapper.self,
+      fromStorageLocation: .bundle
+      )
       .elements
-      .sorted { $0.lastName.lowercased() < $1.lastName.lowercased() } ?? [DevelopmentContributorDTO]()
+      .sorted { $0.lastName.lowercased() < $1.lastName.lowercased() }
   }()
   
-  private lazy var contributors: [DevelopmentContributorDTO] = {
-    DataStorageWorker.retrieveJsonFromFile(with: R.file.projectContributorsJson.name,
-                                                   andDecodeAsType: DevelopmentContributorArrayWrapper.self,
-                                                   fromStorageLocation: .bundle)?
+  private lazy var contributors: [DevelopmentContributorDTO]? = {
+    try? JsonPersistencyWorker().retrieveJsonFromFile(
+      with: R.file.projectContributorsJson.name,
+      andDecodeAsType: DevelopmentContributorArrayWrapper.self,
+      fromStorageLocation: .bundle
+      )
       .elements
-      .sorted { $0.lastName.lowercased() < $1.lastName.lowercased() } ?? [DevelopmentContributorDTO]()
+      .sorted { $0.lastName.lowercased() < $1.lastName.lowercased() }
   }()
   
   // MARK: - Routing
@@ -79,7 +84,7 @@ final class AboutAppTableViewController: UITableViewController, Stepper {
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     
-    if indexPath.section == 0 && indexPath.row == 0 {
+    if indexPath.section == 1 && indexPath.row == 0 {
       UIApplication.shared.open(Constants.Urls.kAppStoreRatingDeepLinkUrl, completionHandler: nil)
       return
     }
@@ -98,13 +103,13 @@ final class AboutAppTableViewController: UITableViewController, Stepper {
       urlStringValue = Constants.Urls.kGitHubProjectMainPageUrl.absoluteString
     }
     if indexPath.section == 4 {
-      urlStringValue = owner[indexPath.row].urlString
+      urlStringValue = owner?[indexPath.row].urlString
     }
     if indexPath.section == 5 {
-      urlStringValue = contributors[indexPath.row].urlString
+      urlStringValue = contributors?[indexPath.row].urlString
     }
     if indexPath.section == 6 {
-      urlStringValue = thirdPartyLibraries[indexPath.row].urlString
+      urlStringValue = thirdPartyLibraries?[indexPath.row].urlString
     }
     guard let urlString = urlStringValue, let url = URL(string: urlString) else {
       return
@@ -129,11 +134,11 @@ final class AboutAppTableViewController: UITableViewController, Stepper {
     case 3:
       return 2
     case 4:
-      return owner.count
+      return owner?.count ?? 0
     case 5:
-      return contributors.count
+      return contributors?.count ?? 0
     case 6:
-      return thirdPartyLibraries.count
+      return thirdPartyLibraries?.count ?? 0
     default:
       return 0
     }
@@ -222,17 +227,17 @@ final class AboutAppTableViewController: UITableViewController, Stepper {
         return singleLabelCell
       }
     case 4:
-      let contributor = owner[indexPath.row]
-      subtitleCell.contentLabel.text = contributor.firstName.append(contentsOf: contributor.lastName, delimiter: .space)
-      subtitleCell.subtitleLabel.text = contributor.localizedContributionDescription
+      let contributor = owner?[indexPath.row]
+      subtitleCell.contentLabel.text = contributor?.firstName.append(contentsOf: contributor?.lastName, delimiter: .space)
+      subtitleCell.subtitleLabel.text = contributor?.localizedContributionDescription
       return subtitleCell
     case 5:
-      let contributor = contributors[indexPath.row]
-      subtitleCell.contentLabel.text = contributor.firstName.append(contentsOf: contributor.lastName, delimiter: .space)
-      subtitleCell.subtitleLabel.text = contributor.localizedContributionDescription
+      let contributor = contributors?[indexPath.row]
+      subtitleCell.contentLabel.text = contributor?.firstName.append(contentsOf: contributor?.lastName, delimiter: .space)
+      subtitleCell.subtitleLabel.text = contributor?.localizedContributionDescription
       return subtitleCell
     case 6:
-      singleLabelCell.contentLabel.text = thirdPartyLibraries[indexPath.row].name
+      singleLabelCell.contentLabel.text = thirdPartyLibraries?[indexPath.row].name
       return singleLabelCell
     default:
       return UITableViewCell()
@@ -240,10 +245,10 @@ final class AboutAppTableViewController: UITableViewController, Stepper {
   }
 }
 
-  // MARK: - Private Helpers
+// MARK: - Private Helpers
 
 private extension AboutAppTableViewController {
-
+  
   func sendMail(to recipients: [String], withSubject subject: String, withMessage message: String) {
     guard MFMailComposeViewController.canSendMail() else {
       return // TODO: tell user needs to set up a mail account

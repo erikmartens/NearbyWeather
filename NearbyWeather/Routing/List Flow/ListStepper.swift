@@ -30,13 +30,13 @@ final class ListStepper: Stepper {
   var steps = PublishRelay<Step>()
   
   var initialStep: Step {
-    WeatherDataService.shared.hasDisplayableData
+    WeatherInformationService.shared.hasDisplayableData
       ? ListStep.list
       : ListStep.emptyList
   }
   
   @objc private func emitStepOnWeatherDataServiceDidUpdate() {
-    guard WeatherDataService.shared.hasDisplayableData else {
+    guard WeatherInformationService.shared.hasDisplayableData else {
       steps.accept(ListStep.emptyList)
       return
     }

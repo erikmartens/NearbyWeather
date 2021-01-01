@@ -12,7 +12,7 @@ import RxFlow
 import RxCocoa
 
 final class MapViewController: UIViewController, Stepper {
-  
+
   private lazy var mapTypeBarButton = {
     UIBarButtonItem(
       image: R.image.layerType(),
@@ -20,17 +20,17 @@ final class MapViewController: UIViewController, Stepper {
       action: #selector(Self.mapTypeBarButtonTapped(_:))
     )
   }()
-  
+
   private var numberOfResultsBarButton: UIBarButtonItem {
     let image = PreferencesDataService.shared.amountOfResults.imageValue
-    
+
     return UIBarButtonItem(
       image: image,
       style: .plain, target: self,
       action: #selector(Self.numberOfResultsBarButtonTapped(_:))
     )
   }
-  
+
   private lazy var focusOnLocationBarButton = {
     UIBarButtonItem(
       image: R.image.marker(),
@@ -38,32 +38,32 @@ final class MapViewController: UIViewController, Stepper {
       action: #selector(Self.focusLocationButtonTapped(_:))
     )
   }()
-  
+
   // MARK: - Routing
-  
+
   var steps = PublishRelay<Step>()
-  
+
   // MARK: - IBOutlets
-  
+
   private var mapView: MKMapView!
-  
+
   // MARK: - Properties
-  
+
   var weatherLocationMapAnnotations: [WeatherLocationMapAnnotation]!
-  
+
   private var selectedBookmarkedLocation: WeatherInformationDTO?
   private var previousRegion: MKCoordinateRegion?
-  
+
   // MARK: - ViewController Lifecycle
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     title = R.string.localizable.tab_weatherMap()
-    
+
     configureMapView()
     configureButtons()
     configureMapAnnotations()
-    
+
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(Self.reconfigureOnWeatherDataServiceDidUpdate),
@@ -71,15 +71,15 @@ final class MapViewController: UIViewController, Stepper {
       object: nil
     )
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    
-    selectedBookmarkedLocation = WeatherDataService.shared.bookmarkedWeatherDataObjects?.first?.weatherInformationDTO
-    
+
+    selectedBookmarkedLocation = WeatherInformationService.shared.bookmarkedWeatherDataObjects?.first?.weatherInformationDTO
+
     focusOnAvailableLocation()
   }
-  
+
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
@@ -88,36 +88,36 @@ final class MapViewController: UIViewController, Stepper {
 // MARK: - Private Helpers
 
 private extension MapViewController {
-  
+
   func configureMapAnnotations() {
     // remove previous annotations
     mapView.annotations.forEach { mapView.removeAnnotation($0) }
-    
+
     // calculate current annotations
     weatherLocationMapAnnotations = [WeatherLocationMapAnnotation]()
-    
-    let bookmarkedLocationAnnotations: [WeatherLocationMapAnnotation]? = WeatherDataService.shared.bookmarkedWeatherDataObjects?.compactMap {
+
+    let bookmarkedLocationAnnotations: [WeatherLocationMapAnnotation]? = WeatherInformationService.shared.bookmarkedWeatherDataObjects?.compactMap {
       guard let weatherDTO = $0.weatherInformationDTO else { return nil }
       return WeatherLocationMapAnnotation(weatherDTO: weatherDTO, isBookmark: true)
     }
     weatherLocationMapAnnotations.append(contentsOf: bookmarkedLocationAnnotations ?? [WeatherLocationMapAnnotation]())
-    
-    let nearbyocationAnnotations = WeatherDataService.shared.nearbyWeatherDataObject?.weatherInformationDTOs?.compactMap {
+
+    let nearbyocationAnnotations = WeatherInformationService.shared.nearbyWeatherDataObject?.weatherInformationDTOs?.compactMap {
       return WeatherLocationMapAnnotation(weatherDTO: $0, isBookmark: false)
     }
     weatherLocationMapAnnotations.append(contentsOf: nearbyocationAnnotations ?? [WeatherLocationMapAnnotation]())
-    
+
     // add current annotations
     mapView.addAnnotations(weatherLocationMapAnnotations)
   }
-  
+
   func focusMapOnUserLocation() {
     if UserLocationService.shared.locationPermissionsGranted, let currentLocation = UserLocationService.shared.currentLocation {
       let region = MKCoordinateRegion.init(center: currentLocation.coordinate, latitudinalMeters: 15000, longitudinalMeters: 15000)
       mapView.setRegion(region, animated: true)
     }
   }
-  
+
   func focusMapOnSelectedBookmarkedLocation() {
     guard let selectedLocation = selectedBookmarkedLocation,
       let latitude = selectedLocation.coordinates.latitude,
@@ -128,7 +128,7 @@ private extension MapViewController {
     let region = MKCoordinateRegion.init(center: coordinate, latitudinalMeters: 15000, longitudinalMeters: 15000)
     mapView.setRegion(region, animated: true)
   }
-  
+
   func focusOnAvailableLocation() {
     if let previousRegion = previousRegion {
       mapView.setRegion(previousRegion, animated: true)
@@ -140,13 +140,13 @@ private extension MapViewController {
     }
     focusMapOnUserLocation()
   }
-  
+
   func configureMapView() {
     mapView = MKMapView()
-    
+
     mapView.delegate = self
     mapView.mapType = PreferencesDataService.shared.preferredMapType
-    
+
     view.addSubview(mapView, constraints: [
       mapView.topAnchor.constraint(equalTo: view.topAnchor),
       mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -154,15 +154,15 @@ private extension MapViewController {
       mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
     ])
   }
-  
+
   func configureButtons() {
     navigationItem.leftBarButtonItem = mapTypeBarButton
-    
-    guard WeatherDataService.shared.hasDisplayableWeatherData else {
+
+    guard WeatherInformationService.shared.hasDisplayableWeatherData else {
       navigationItem.rightBarButtonItems = nil
       return
     }
-    
+
     navigationItem.rightBarButtonItems = [focusOnLocationBarButton, numberOfResultsBarButton]
   }
 }
@@ -170,7 +170,7 @@ private extension MapViewController {
 // MARK: - Target Functions
 
 private extension MapViewController {
-  
+
   @objc func mapTypeBarButtonTapped(_ sender: UIBarButtonItem) {
     let alert = Factory.AlertController.make(fromType:
       .weatherMapType(currentMapType: PreferencesDataService.shared.preferredMapType, completionHandler: { [weak self] mapType in
@@ -182,7 +182,7 @@ private extension MapViewController {
     )
     present(alert, animated: true, completion: nil)
   }
-  
+
   @objc func numberOfResultsBarButtonTapped(_ sender: UIBarButtonItem) {
     let alert = Factory.AlertController.make(fromType:
       .preferredAmountOfResultsOptions(options: AmountOfResultsOption.availableOptions, completionHandler: { [weak self] changed in
@@ -192,14 +192,14 @@ private extension MapViewController {
     )
     present(alert, animated: true, completion: nil)
   }
-  
+
   @objc func focusLocationButtonTapped(_ sender: UIBarButtonItem) {
-    guard let bookmarkedWeatherDataObjects = WeatherDataService.shared.bookmarkedWeatherDataObjects?.compactMap({
+    guard let bookmarkedWeatherDataObjects = WeatherInformationService.shared.bookmarkedWeatherDataObjects?.compactMap({
       return $0.weatherInformationDTO
     }) else {
       return
     }
-    
+
     let alert = Factory.AlertController.make(fromType:
       .focusMapOnLocation(bookmarks: bookmarkedWeatherDataObjects,
                           completionHandler: { [weak self] weatherInformationDTO in
@@ -215,7 +215,7 @@ private extension MapViewController {
     )
     present(alert, animated: true, completion: nil)
   }
-  
+
   @objc private func reconfigureOnWeatherDataServiceDidUpdate() {
     configureMapAnnotations()
     configureButtons()
@@ -223,33 +223,33 @@ private extension MapViewController {
 }
 
 extension MapViewController: MKMapViewDelegate {
-  
+
   func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
     guard let annotation = annotation as? WeatherLocationMapAnnotation else {
       return nil
     }
-    
+
     var viewForCurrentAnnotation: WeatherLocationMapAnnotationView?
     if let dequeuedAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: Constants.Keys.MapAnnotation.kMapAnnotationViewIdentifier) as? WeatherLocationMapAnnotationView {
       viewForCurrentAnnotation = dequeuedAnnotationView
     } else {
       viewForCurrentAnnotation = WeatherLocationMapAnnotationView(frame: kMapAnnotationViewInitialFrame)
     }
-    
+
     var fillColor: UIColor
     var textColor: UIColor
-    
+
     if annotation.isBookmark {
       fillColor = annotation.isDayTime ?? true
         ? Constants.Theme.Color.MarqueColors.standardDay
         : Constants.Theme.Color.MarqueColors.standardNight // default to blue colored cells
-      
+
       textColor = .white
     } else {
       fillColor = .white
       textColor = .black
     }
-    
+
     viewForCurrentAnnotation?.annotation = annotation
     viewForCurrentAnnotation?.configure(
       withTitle: annotation.title ?? Constants.Messages.kNotSet,
@@ -258,9 +258,10 @@ extension MapViewController: MKMapViewDelegate {
       textColor: textColor,
       tapHandler: { [weak self] _ in
         self?.previousRegion = mapView.region
-        self?.steps.accept(
-          MapStep.weatherDetails(identifier: annotation.locationId, isBookmark: annotation.isBookmark)
-        )
+        self?.steps.accept(MapStep.weatherDetails(
+            identifier: annotation.locationId,
+            isBookmark: annotation.isBookmark
+        ))
       }
     )
     return viewForCurrentAnnotation
